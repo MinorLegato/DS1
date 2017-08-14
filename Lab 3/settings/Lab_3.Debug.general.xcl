@@ -1,0 +1,15 @@
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.5\arm\bin\armproc.dll" 
+
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.5\arm\bin\armjlink2.dll" 
+
+"C:\Users\Anton\OneDrive\Programming\Weatherstation Test\Lab 3\Debug\Exe\Lab_3.out" 
+
+--plugin "C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.5\arm\bin\armbat.dll" 
+
+--device_macro "C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.5\arm\config\debugger\Atmel\SAM3XA.dmac" 
+
+--macro "C:\Users\Anton\OneDrive\We hate Frans\Weatherstation\Lab 1\arduino_due_x_sram.mac" 
+
+
+
+
