@@ -4,7 +4,6 @@
 #include "at91sam3x8.h"
 #include "ats.h"
 
-
 #define DISPLAY_WIDTH   ((i32) (30))
 #define DISPLAY_HEIGHT  ((i32) (16))
 #define DISPLAY_SIZE    ((i32) (DISPLAY_WIDTH * DISPLAY_HEIGHT))
@@ -14,16 +13,12 @@
 
 #define DISPLAY_PIXEL_SIZE   ((i32)(DISPLAY_PIXEL_WIDTH * DISPLAY_PIXEL_HEIGHT))
 
-
-
 #define DISPLAY_PIO (KEYBOARD_PIO | AT91C_PIO_PC8  | AT91C_PIO_PC12 | AT91C_PIO_PC13 \
-| AT91C_PIO_PC19 | AT91C_PIO_PC18 | AT91C_PIO_PC17 \
-| AT91C_PIO_PC16 | AT91C_PIO_PC15 | AT91C_PIO_PC14)
+    | AT91C_PIO_PC19 | AT91C_PIO_PC18 | AT91C_PIO_PC17 \
+    | AT91C_PIO_PC16 | AT91C_PIO_PC15 | AT91C_PIO_PC14)
 
 
-
-static u8 display_read_status(void)
-{
+static u8 display_read_status(void) {
     //make databus as input
     *AT91C_PIOC_ODR = 0xFF << 2;              // PC2 - 9, PIN 34 - 41
     //Set dir as input (74chip, 1 = input)
@@ -54,8 +49,7 @@ static u8 display_read_status(void)
 
 
 
-static __INLINE void display_write_command(u8 command)
-{
+static __INLINE void display_write_command(u8 command) {
     // Wait until Read_Status_Display returns an OK
     while(display_read_status() == 0xFF);
     
@@ -87,8 +81,7 @@ static __INLINE void display_write_command(u8 command)
     *AT91C_PIOC_ODR = (0xFF << 2);          // PC2 - 9, PIN 34 - 41
 }
 
-static __INLINE void display_write_data(u8 data)
-{
+static __INLINE void display_write_data(u8 data) {
     // Wait until Read_Status_Display returns an OK
     while(display_read_status() == 0xFF);
     
@@ -120,8 +113,7 @@ static __INLINE void display_write_data(u8 data)
     *AT91C_PIOC_ODR = (0xFF << 2);            // PC 2 - 9, PIN 34 - 41
 }
 
-static __INLINE void display_set_cursor(i32 x, i32 y)
-{
+static __INLINE void display_set_cursor(i32 x, i32 y) {
     u16 addr = y * DISPLAY_WIDTH + x;
     
     display_write_data(addr & 0xFF);
@@ -130,8 +122,7 @@ static __INLINE void display_set_cursor(i32 x, i32 y)
     display_write_command(0x24);
 }
 
-static __INLINE void display_set_pixel_cursor(i32 x, i32 y)
-{
+static __INLINE void display_set_pixel_cursor(i32 x, i32 y) {
     u16 addr = y * (DISPLAY_PIXEL_WIDTH / 8) + x;
     
     display_write_data(addr & 0xFF);
@@ -140,12 +131,10 @@ static __INLINE void display_set_pixel_cursor(i32 x, i32 y)
     display_write_command(0x24);
 }
 
-static void display_text_clear()
-{
+static void display_text_clear() {
     display_set_cursor(0, 0);
     
-    for(i32 i = 0; i < DISPLAY_SIZE + 5; i++)
-    {                
+    for(i32 i = 0; i < DISPLAY_SIZE + 5; i++) { 
         display_write_data(0x00);
         display_write_command(0xC0);
     }
@@ -153,8 +142,7 @@ static void display_text_clear()
     display_set_cursor(0, 0);
 }
 
-static __INLINE void display_set_pixel(i32 x, i32 y, i32 bit)
-{
+static __INLINE void display_set_pixel(i32 x, i32 y, i32 bit) {
     display_set_pixel_cursor(x / 8, y);
     
     display_write_data(0x80 >> (x % 8));
@@ -163,12 +151,9 @@ static __INLINE void display_set_pixel(i32 x, i32 y, i32 bit)
 
 
 
-static void display_pixel_clear()
-{
-    for (i32 y = 0; y < DISPLAY_PIXEL_HEIGHT; y++)
-    {
-        for (i32 x = 0; x < DISPLAY_PIXEL_WIDTH / 8; x++)
-        {
+static void display_pixel_clear() {
+    for (i32 y = 0; y < DISPLAY_PIXEL_HEIGHT; y++) {
+        for (i32 x = 0; x < DISPLAY_PIXEL_WIDTH / 8; x++) {
             display_set_pixel_cursor(x, y);
             
             display_write_data(0x00);
@@ -180,15 +165,13 @@ static void display_pixel_clear()
 }
 
 
-static void display_clear()
-{
+static void display_clear() {
     display_text_clear();
     display_pixel_clear();
 }
 
 
-void initDisplay()
-{
+void initDisplay() {
     *AT91C_PMC_PCER = (1 << 13) | (1 << 14);
     
     *AT91C_PIOC_PER = DISPLAY_PIO;
@@ -223,13 +206,8 @@ void initDisplay()
     display_clear();
 }
 
-
-
-
-static void display_value(i32 value)
-{
-    static const u8 data[] =
-    {
+static void display_value(i32 value) {
+    static const u8 data[] = {
         0x00,
         0x11, 0x12, 0x13,
         0x14, 0x15, 0x16,
@@ -241,62 +219,47 @@ static void display_value(i32 value)
     display_write_command(0xC4);
 }
 
-static void display_float(i32 x, i32 y, r32 value)
-{
+static void display_float(i32 x, i32 y, r32 value) {
     static char buffer[64];
     
     sprintf(buffer, "%.2f", value);
     
     display_set_cursor(x, y);
     
-    for (i32 i = 0; buffer[i] != '\0'; i++)
-    {
+    for (i32 i = 0; buffer[i] != '\0'; i++) {
         display_write_data(buffer[i] == '.'? 0x0E : buffer[i] - ('0' - 0x10));
         display_write_command(0xC0);
     }
 }
 
-
-static void display_int32(i32 x, i32 y, i32 value)
-{
+static void display_int32(i32 x, i32 y, i32 value) {
     static char buffer[64];
     
     sprintf(buffer, "%d", value);
     
     display_set_cursor(x, y);
     
-    for (i32 i = 0; buffer[i] != '\0'; i++)
-    {
+    for (i32 i = 0; buffer[i] != '\0'; i++) {
         display_write_data(buffer[i] - ('0' - 0x10));
         display_write_command(0xC0);
     }
 }
 
-
-
-static void display_simple_string(i32 x, i32 y, const char* simple_str)
-{
+static void display_simple_string(i32 x, i32 y, const char* simple_str) {
     display_set_cursor(x, y);
     
-    for (i32 i = 0; simple_str[i] != '\0'; i++)
-    {
-        if (simple_str[i] >= 'a' && simple_str[i] <= 'z')
-        {
+    for (i32 i = 0; simple_str[i] != '\0'; i++) {
+        if (simple_str[i] >= 'a' && simple_str[i] <= 'z') {
             display_write_data(simple_str[i] - ('a' - 0x41));
-        }
-        else if (simple_str[i] >= 'A' && simple_str[i] <= 'Z')
-        {
+        } else if (simple_str[i] >= 'A' && simple_str[i] <= 'Z') {
             display_write_data(simple_str[i] - ('A' - 0x21));
-        }
-        else if (simple_str[i] == ' ')
-        {
+        } else if (simple_str[i] == ' ') {
             display_write_data(0);
         }
-        
+
         display_write_command(0xC0);
     }
 }
-
 
 #endif
 

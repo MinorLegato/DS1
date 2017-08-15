@@ -5,8 +5,9 @@
 #include "at91sam3x8.h"
 
 #include "ats.h"
-#include "systick.h"
 #include "delay.h"
+
+i32 systickGetTime();
 
 #define TEMP_READY_TIME ((i32)(500))
 #define TEMP_COMPRESSION_OFFSET ((i32)(32000))
@@ -15,8 +16,7 @@ static i32 __temp_start_time = -1;
 static r32 __current_temp = 0.0f;
 static u16 __current_temp_compressed = 0;
 
-static void initTemp()
-{
+static void initTemp() {
     *AT91C_PMC_PCER = (1 << 12) | (1 << 27);    // init TC0
     
     // Enable counter and make a sw_reset in TC0_CCR0
@@ -37,8 +37,7 @@ static void initTemp()
     while((systickGetTime() - t_reset) < 520);
 }
 
-static void tempStartMesurment()
-{
+static void tempStartMesurment() {
     *AT91C_TC0_IER = 1 << 6;             // interrupt LDRBS 
     
     // create a startpuls with a Delay(25); sw_reset in TC0_CCR0.
@@ -56,18 +55,15 @@ static void tempStartMesurment()
     __temp_start_time = systickGetTime();
 }
 
-static __INLINE r32 tempConvert(i32 rb_ra_diff)
-{
+static __INLINE r32 tempConvert(i32 rb_ra_diff) {
     return (rb_ra_diff / (5.0f * 42.0f)) - 273.15f; // divide by 42
 }
 
-static __INLINE r32 tempDecompress(u16 compressed)
-{
+static __INLINE r32 tempDecompress(u16 compressed) {
     return tempConvert(compressed + TEMP_COMPRESSION_OFFSET);
 }
 
-static void __set_current_temp()
-{
+static void __set_current_temp() {
     // global_variable = REG_TC0_RB0 - REG_TC0_RA0 or use a flag
     i32 rb = (*AT91C_TC0_RB); //Register B
     i32 ra = (*AT91C_TC0_RA); //Register A 
@@ -78,8 +74,7 @@ static void __set_current_temp()
     __current_temp = tempConvert(rb - ra);
 }
 
-static __INLINE i32 tempReady()
-{
+static __INLINE i32 tempReady() {
     if ((__temp_start_time != -1) && (__temp_start_time + TEMP_READY_TIME) < systickGetTime()) {
         __temp_start_time = -1;
         __set_current_temp();
@@ -88,13 +83,11 @@ static __INLINE i32 tempReady()
     return 0;
 }
 
-static __INLINE u16 tempGetCompressed()
-{
+static __INLINE u16 tempGetCompressed() {
     return __current_temp_compressed;
 }
 
-static __INLINE r32 tempGetCurrent()
-{
+static __INLINE r32 tempGetCurrent() {
     return __current_temp;
 }
 

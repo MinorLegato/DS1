@@ -147,7 +147,7 @@ static inline v2 rotateRad(v2 v, r32 rad) {
 }
 
 static inline v2 rotateDeg(v2 v, r32 deg) {
-    r32 rad = toRad(deg);
+    r32 rad = TO_RAD(deg);
     return V2(
         v.x * cosf(rad) - v.y * sinf(rad),
         v.x * sinf(rad) + v.y * cosf(rad));
