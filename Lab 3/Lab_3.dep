@@ -72,6 +72,7 @@
       <file>$PROJ_DIR$\Debug\Obj\exceptions.pbi</file>
       <file>$PROJ_DIR$\at91sam3x8.h</file>
       <file>$TOOLKIT_DIR$\config\linker\Atmel\sam3x8e\sram.icf</file>
+      <file>$TOOLKIT_DIR$\inc\c\inttypes.h</file>
     </outputs>
     <file>
       <name>[ROOT_NODE]</name>
@@ -152,11 +153,11 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 39 12 9 11 61 58 40 43 45 49 54 64 6 29 5 27 17 26 2 35 53 10 41 33 48 56 13 57 30 16 59 51 50 1 60 47 34</file>
+          <file> 41 49 39 64 61 53 9 5 30 27 17 6 10 33 1 29 66 11 26 58 2 12 40 59 51 50 43 57 16 48 45 56 13 35 54 60 47 34</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 16 49 5 9 48 45 56 43 59 40 13 35 50 51 64 27 57 61 54 29 1 17 39 60 30 47 11 6 26 53 58 10 2 41 12 33 34</file>
+          <file> 16 49 5 9 48 45 56 43 59 40 13 35 50 51 64 27 57 61 54 29 1 17 66 39 60 30 47 11 6 26 53 58 10 2 41 12 33 34</file>
         </tool>
       </inputs>
     </file>

@@ -18,7 +18,7 @@ static __INLINE void framebufferSetPixel(i32 x, i32 y) {
 }
 
 static __INLINE void framebufferClearPixel(i32 x, i32 y) {
-    __framebuffer[__cfb][y][x / 8] &= (0x80 >> ~(x % 8));
+    __framebuffer[__cfb][y][x / 8] &= ~(0x80 >> (x % 8));
 }
 
 static void framebufferDrawLine(i32 fx, i32 fy, i32 tx, i32 ty)

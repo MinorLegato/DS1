@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <limits.h>
+#include <inttypes.h>
 
 #include "ats.h"
 
@@ -52,10 +53,11 @@ static void randomTempArray() {
 
 // ===================================== MAIN MENU ======================================== //
 
-STRUCT(MenuOption) { const char *name; void (*runSystem)(); };
+STRUCT(MenuOption) { const char *name; void (*run)(); };
 
 static const MenuOption menu[] = {
     { "random temp", randomTempArray },
+    { "YOLO", NULL },
     { "play snake",  runSnakeGame }
 };
 
@@ -88,11 +90,11 @@ static void mainMenu() {
         renderAscii('*', 0, 16 + cursor * spacing, 1.0f, 1.0f);
 
         switch (keypadRead()) {
-            case 5: { menu[cursor].runSystem(); } break;
+            case 5: { if (menu[cursor].run) menu[cursor].run(); } break;
             case 2: { cursor--; } break;
             case 8: { cursor++; } break;
-            case 1: { spacing -= 1; } break;
-            case 3: { spacing += 1; } break;
+            case 1: { spacing -= 2; } break;
+            case 3: { spacing += 2; } break;
         }
 
         if (cursor < 0) { cursor = menuSize - 1; }
@@ -101,10 +103,13 @@ static void mainMenu() {
         framebufferClearPixel(0, 1);
         framebufferClearPixel(0, 2);
         framebufferClearPixel(0, 3);
+        framebufferClearPixel(0, 4);
+        framebufferClearPixel(0, 5);
+        framebufferClearPixel(0, 6);
 
         framebufferDisplay();
 
-        delay(10000);
+        delay(1000000);
     }
 }
 
@@ -119,8 +124,6 @@ int main() {
     initServo();
     initTemp();
     initLightSensor();
-
-    initBitmaps();
 
     tempStartMesurment();
     mainMenu();
