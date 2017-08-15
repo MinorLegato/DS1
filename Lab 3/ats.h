@@ -6,8 +6,7 @@
 
 #define STRUCT(NAME) typedef struct NAME NAME; struct NAME
 
-#define FOR_MATRIX(X, Y) \
-    for (i32 y = 0; y < Y; y++) for (i32 x = 0; x < X; x++)
+#define FOR_MATRIX(X, Y) for (i32 y = 0; y < Y; y++) for (i32 x = 0; x < X; x++)
 
 typedef int32_t b32;
 
@@ -24,25 +23,25 @@ typedef int16_t i16;
 typedef int32_t i32;
 typedef int64_t i64;
 
-#define randi(min, max) (rand() % ((max) - (min)) + (min))
-#define randf(min, max) ((rand() / (r32)RAND_MAX) * fabs((r32)(max) - (r32)(min)) + (r32)(min))
+#define RANDI(min, max) (rand() % ((max) - (min)) + (min))
+#define RANDF(min, max) ((rand() / (r32)RAND_MAX) * fabs((r32)(max) - (r32)(min)) + (r32)(min))
 
-#define Array(T, N) struct { i32 size; T data[N]; }
+#define ARRAY(T, N) struct { i32 size; T data[N]; }
 
-#define pushBack(arr, e)    do { (arr)->data[(arr)->size++] = (e); } while (0);
-#define eraseElem(arr, i)   do { (arr)->data[(i)] = (arr)->data[--(arr)->size]; } while (0);
-#define clearArray(arr)     do { (arr)->size = 0; } while (0);
-#define setElem(arr, i, e)  do { (arr)->data[i] = e; } while (0);
+#define ADD(arr, e)    do { (arr)->data[(arr)->size++] = (e); } while (0);
+#define REM(arr, i)   do { (arr)->data[(i)] = (arr)->data[--(arr)->size]; } while (0);
+#define CLEAR(arr)     do { (arr)->size = 0; } while (0);
+#define SET(arr, i, e)  do { (arr)->data[i] = e; } while (0);
 
-#define getElem(arr, i)     ((arr)->data[(i)])
-#define getSize(arr)        ((arr)->size)
+#define GET(arr, i)     ((arr)->data[(i)])
+#define SIZE(arr)        ((arr)->size)
 
-#define forEach(INDEX, ARRAY) for (i32 INDEX = 0; INDEX < getSize(ARRAY); INDEX++)
+#define FOR_EACH(INDEX, ARRAY) for (i32 INDEX = 0; INDEX < getSize(ARRAY); INDEX++)
 
 #define PI (3.14159265359f)
 
-#define toRad(deg) ((deg) * ((PI) / 180.0f))
-#define toDeg(rad) ((rad) * (180.0f / (PI)))
+#define TO_RAD(deg) ((deg) * ((PI) / 180.0f))
+#define TO_DEG(rad) ((rad) * (180.0f / (PI)))
 
 // from Quake 3 Arena
 static inline r32 rsqrt(r32 number) {

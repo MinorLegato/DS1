@@ -30,7 +30,7 @@ static struct {
     r32 max[7];
     r32 avg[7];
 
-    Array(u16, MAX_TEMPS) array;
+    ARRAY(u16, MAX_TEMPS) array;
 } temp;
 
 static u16 tempNoise(float x) {
@@ -39,15 +39,13 @@ static u16 tempNoise(float x) {
 }
 
 static void randomTempArray() {
-    clearArray(&temp.array);
-
-    pushBack(&temp.array, tempNoise(i));
+    CLEAR(&temp.array);
 
     for (i32 i = 0; i < DAYS; i++) {
         for (i32 j = 0; j < MINUTES; j++) {
             u16 noise = tempNoise(i);
 
-            pushBack(&temp.array, noise);
+            ADD(&temp.array, noise);
         }
     }
 }
@@ -77,7 +75,7 @@ static void mainMenu() {
         sprintf(strBuffer, "temp: %.2f", tempGetCurrent());
         renderAsciiString(strBuffer, 132, 16, 1.0f, 1.0f);
 
-        sprintf(strBuffer, "data: %d",   getSize(&temp.array));
+        sprintf(strBuffer, "data: %d", SIZE(&temp.array));
         renderAsciiString(strBuffer, 132, 32, 1.0f, 1.0f);
 
         sprintf(strBuffer, "max:  %d",   MAX_TEMPS);
@@ -99,6 +97,10 @@ static void mainMenu() {
 
         if (cursor < 0) { cursor = menuSize - 1; }
         if (cursor >= menuSize) { cursor = 0; }
+
+        framebufferClearPixel(0, 1);
+        framebufferClearPixel(0, 2);
+        framebufferClearPixel(0, 3);
 
         framebufferDisplay();
 

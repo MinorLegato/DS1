@@ -6,20 +6,21 @@
 #include "ats.h"
 #include "display.h"
 
-
 #define FRAMEBUFFER_WIDTH   ((i32)(DISPLAY_WIDTH))
 #define FRAMEBUFFER_HEIGHT  ((i32)(DISPLAY_PIXEL_HEIGHT))
 #define FRAMEBUFFER_SIZE    ((i32)(FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT))
 
-
 u8 __framebuffer[FRAMEBUFFER_HEIGHT][FRAMEBUFFER_WIDTH];
 
-
-static __INLINE void framebufferSetPixel(i32 x, i32 y)
-{
+static __INLINE void framebufferSetPixel(i32 x, i32 y) {
     __framebuffer[y][x / 8] |= (0x80 >> (x % 8));
 }
 
+static __INLINE void framebufferClearPixel(i32 x, i32 y) {
+    __framebuffer[y][x / 8] &= (0x80 >> ~(x % 8));
+}
+
+/*
 static __INLINE void framebufferClearPixel(i32 x, i32 y)
 {
     i32 bit = x % 8;
@@ -27,8 +28,9 @@ static __INLINE void framebufferClearPixel(i32 x, i32 y)
     
     u8 byte = __framebuffer[bx][y];
     
-    __framebuffer[y][bx] = byte & ~(0x80 >> bit);
+    __framebuffer[y][bx] &= & ~(0x80 >> bit);
 }
+*/
 
 static void framebufferDrawLine(i32 fx, i32 fy, i32 tx, i32 ty)
 {

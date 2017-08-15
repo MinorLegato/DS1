@@ -2,16 +2,7 @@
 
 <workspace>
   <project>
-    <path>$WS_DIR$\Lab 1\Lab_1.ewp</path>
-  </project>
-  <project>
-    <path>$WS_DIR$\Lab 2\Lab_2.ewp</path>
-  </project>
-  <project>
     <path>$WS_DIR$\Lab 3\Lab_3.ewp</path>
-  </project>
-  <project>
-    <path>$WS_DIR$\Snake\Snake.ewp</path>
   </project>
   <batchBuild/>
 </workspace>
