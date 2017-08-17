@@ -150,26 +150,38 @@ static __INLINE void renderAscii(char c, r32 px, r32 py, r32 x_scale, r32 y_scal
         FOR_MATRIX(8, 8) {
             if (getbit(n, x, y) > 0) {
                 framebufferDrawRect(
-                        (i32)(px + x * x_scale),
-                        (i32)(py + y * y_scale),
-                        (i32)(px + (x + 1) * x_scale),
-                        (i32)(py + (y + 1) * y_scale));
+                    (i32)(px + x * x_scale),
+                    (i32)(py + y * y_scale),
+                    (i32)(px + (x + 1) * x_scale),
+                    (i32)(py + (y + 1) * y_scale));
             }
         }
     }
 }
 
-static __INLINE void renderAsciiString(const char* str, r32 x, r32 y, r32 scale_x, r32 scale_y) {
+static __INLINE void renderString(const char* str, r32 x, r32 y, r32 scale_x, r32 scale_y) {
     for (i32 i = 0; str[i] != '\0'; i++) {
         renderAscii(str[i], x + i * 8 * scale_x, y, scale_x, scale_y);
     }
+}
+
+static __INLINE void renderI32(i32 n, r32 x, r32 y, r32 scale_x, r32 scale_y) {
+    static char buffer[32];
+    sprintf(buffer, "%d", n);
+    renderString(buffer, x, y, scale_x, scale_y);
+}
+
+static __INLINE void renderR32(r32 n, r32 x, r32 y, r32 scale_x, r32 scale_y) {
+    static char buffer[32];
+    sprintf(buffer, "%.2f", n);
+    renderString(buffer, x, y, scale_x, scale_y);
 }
 
 static inline void renderStringBox(const char* str, r32 x, r32 y, r32 w, r32 h) {
     i32 slen = strlen(str);
     r32 x_scale = w / ((r32)slen * 8.0f);
     r32 y_scale = h / 8.0f;
-
+    
     for (i32 i = 0; i < slen; i++) {
         renderAscii(str[i], x + i * 8 * x_scale, y, x_scale, y_scale);
     }
@@ -177,9 +189,7 @@ static inline void renderStringBox(const char* str, r32 x, r32 y, r32 w, r32 h) 
 
 static inline void renderNumberBox(i32 n, r32 x, r32 y, r32 w, r32 h) {
     static char buffer[32];
-
     sprintf(buffer, "%d", n);
-
     renderStringBox(buffer, x, y, w, h);
 }
 

@@ -57,18 +57,17 @@ static __INLINE void resetTimer(clock_t* time) {
 
 void runSnakeGame() {
     static SnakeState snake;
-
+    
     i32 game_running = 1;
     clock_t timer = clock();
-
+    
     initSnakeState(&snake);
     
-    display_clear();
-    framebufferClear();
-
+    //display_clear();
+    
     while (game_running) {
         i32 key = keypadRead();
-
+        
         if (key) {
             if (key == 10) game_running = 0;
             if (key == 2 && snake.fdir_y != -1) { snake.dir_x =  0; snake.dir_y = -1; }
@@ -76,7 +75,7 @@ void runSnakeGame() {
             if (key == 4 && snake.fdir_x != -1) { snake.dir_x = -1; snake.dir_y =  0; }
             if (key == 6 && snake.fdir_x !=  1) { snake.dir_x =  1; snake.dir_y =  0; }
         }
-
+        
         if (elapsedTime(&timer) > 25) {
             resetTimer(&timer);
             
@@ -84,9 +83,9 @@ void runSnakeGame() {
             snake.fdir_y = -snake.dir_y;
             
             i32 old_head = snake.head;
-
+            
             framebufferClearSnake(snake.xs[snake.tail], snake.ys[snake.tail]);
-
+            
             snake.board[snake.ys[snake.tail]] ^= (1 << snake.xs[snake.tail]);
             
             if (++snake.head == DISPLAY_SIZE) { snake.head = 0; }
@@ -123,7 +122,7 @@ void runSnakeGame() {
             
             framebufferDrawSnake(snake.xs[snake.head], snake.ys[snake.head]);
             framebufferDrawApple(snake.apple_x, snake.apple_y);
-
+            
             framebufferDisplay();
         }
     }
