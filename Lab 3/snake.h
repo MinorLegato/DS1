@@ -62,7 +62,8 @@ void runSnakeGame() {
     clock_t timer = clock();
     
     initSnakeState(&snake);
-    
+
+    framebufferClear();
     //display_clear();
     
     while (game_running) {
@@ -123,7 +124,7 @@ void runSnakeGame() {
             framebufferDrawSnake(snake.xs[snake.head], snake.ys[snake.head]);
             framebufferDrawApple(snake.apple_x, snake.apple_y);
             
-            framebufferDisplay();
+            framebufferDisplayNoSwap();
         }
     }
 }

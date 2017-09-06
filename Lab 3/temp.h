@@ -7,9 +7,10 @@
 #include "ats.h"
 #include "delay.h"
 
+// forward decl
 i32 systickGetTime();
 
-#define TEMP_READY_TIME ((i32)(500))
+#define TEMP_READY_TIME         ((i32)(500))
 #define TEMP_COMPRESSION_OFFSET ((i32)(32000))
 
 static i32 __temp_start_time = -1;

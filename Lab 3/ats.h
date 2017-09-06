@@ -28,13 +28,13 @@ typedef int64_t i64;
 
 #define ARRAY(T, N) struct { i32 size; T data[N]; }
 
-#define ADD(arr, e)    do { (arr)->data[(arr)->size++] = (e); } while (0);
-#define REM(arr, i)   do { (arr)->data[(i)] = (arr)->data[--(arr)->size]; } while (0);
-#define CLEAR(arr)     do { (arr)->size = 0; } while (0);
+#define ADD(arr, e)     do { (arr)->data[(arr)->size++] = (e); } while (0);
+#define REM(arr, i)     do { (arr)->data[(i)] = (arr)->data[--(arr)->size]; } while (0);
+#define CLEAR(arr)      do { (arr)->size = 0; } while (0);
 #define SET(arr, i, e)  do { (arr)->data[i] = e; } while (0);
 
-#define GET(arr, i)     ((arr)->data[(i)])
-#define SIZE(arr)        ((arr)->size)
+#define GET(arr, i) ((arr)->data[(i)])
+#define SIZE(arr)   ((arr)->size)
 
 #define FOR_EACH(INDEX, ARRAY) for (i32 INDEX = 0; INDEX < getSize(ARRAY); INDEX++)
 
@@ -51,10 +51,10 @@ static inline r32 rsqrt(r32 number) {
 
 	x2 = number * 0.5F;
 	y  = number;
-    i = (union { r32 f; u32 l; }) { y }.l; // evil floating point bit level hacking
-	i  = 0x5f3759df - (i >> 1);            // what the fuck? 
+    i = (union { r32 f; u32 l; }) { y }.l;  // evil floating point bit level hacking
+	i  = 0x5f3759df - (i >> 1);             // what the fuck? 
     y = (union { u32 l; r32 f; }) { i }.f;
-	y  = y * (threehalfs - (x2 * y * y));  // 1st iteration
+	y  = y * (threehalfs - (x2 * y * y));   // 1st iteration
 
 	return y;
 }
@@ -64,8 +64,7 @@ STRUCT(v2) {
     r32 y;
 };
 
-static inline v2 V2(r32 x, r32 y)
-{
+static inline v2 V2(r32 x, r32 y) {
     v2 v = { x, y }; return v;
 }
 

@@ -34,6 +34,17 @@ static struct {
     ARRAY(u16, MAX_TEMPS) array;
 } temp;
 
+static void loggCurrentTemp() {
+    static int last = 0;
+
+    i32 t = systickGetTime();
+
+    if (t > (last + 1000)) {
+        ADD(&temp.array, tempGetCompressed());
+        last = t;
+    }
+}
+
 static u16 tempNoise(r32 x) {
     r32 noise = perlinNoise(x * 0.1f, 0.1f, 0.0f);
     return 30000 + (u16)(12000.0f * noise);
@@ -67,16 +78,10 @@ static void randomTempArray() {
     }
 }
 
-static void startLogging() {
-    // TODO(anton):
-}
-
-static void stopLogging() {
-    // TODO(anton):
-}
+static void startLogging()  { isLogging = 1; }
+static void stopLogging()   { isLogging = 0; }
 
 static void clearLog() {
-    // TODO(anton):
     CLEAR(&temp.min);
     CLEAR(&temp.max);
     CLEAR(&temp.avg);
@@ -122,7 +127,6 @@ static void mainMenu() {
     char strBuffer[16];
     
     r32 spacing = 16.0f;
-    
     i32 cursor = 0;
     
     while (1) {
@@ -181,11 +185,7 @@ int main() {
     initLightSensor();
     
     tempStartMesurment();
-    
-    for (i32 i = 0; i < 10; i++) {
-        printf("%d\n", tempNoise(100 * i));
-    }
-    
+   
     mainMenu();
 }
 

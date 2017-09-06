@@ -21,8 +21,7 @@ static __INLINE void framebufferClearPixel(i32 x, i32 y) {
     __framebuffer[__cfb][y][x / 8] &= ~(0x80 >> (x % 8));
 }
 
-static void framebufferDrawLine(i32 fx, i32 fy, i32 tx, i32 ty)
-{
+static void framebufferDrawLine(i32 fx, i32 fy, i32 tx, i32 ty) {
     r32 k = (r32)(ty - fy) / (r32)(tx - fx);
     r32 m = (r32)(fy - k * fx);
     
@@ -31,8 +30,7 @@ static void framebufferDrawLine(i32 fx, i32 fy, i32 tx, i32 ty)
     }
 }
 
-static __INLINE void framebufferDrawSnake(i32 x, i32 y)
-{
+static __INLINE void framebufferDrawSnake(i32 x, i32 y) {
     __framebuffer[__cfb][8 * y + 0][x] = 0x00;
     __framebuffer[__cfb][8 * y + 1][x] = 0x7E;
     __framebuffer[__cfb][8 * y + 2][x] = 0x7E;
@@ -43,8 +41,7 @@ static __INLINE void framebufferDrawSnake(i32 x, i32 y)
     __framebuffer[__cfb][8 * y + 7][x] = 0x00;
 }
 
-static __INLINE void framebufferClearSnake(i32 x, i32 y)
-{
+static __INLINE void framebufferClearSnake(i32 x, i32 y) {
     __framebuffer[__cfb][8 * y + 0][x] = 0x00;
     __framebuffer[__cfb][8 * y + 1][x] = 0x00;
     __framebuffer[__cfb][8 * y + 2][x] = 0x00;
@@ -64,8 +61,7 @@ static __INLINE void framebufferClearSnake(i32 x, i32 y)
 //  "  111111 
 //  "   1111  
 
-static __INLINE void framebufferDrawApple(i32 x, i32 y)
-{
+static __INLINE void framebufferDrawApple(i32 x, i32 y) {
     __framebuffer[__cfb][8 * y + 0][x] = 0x04;
     __framebuffer[__cfb][8 * y + 1][x] = 0x08;
     __framebuffer[__cfb][8 * y + 2][x] = 0x7E;
@@ -76,8 +72,7 @@ static __INLINE void framebufferDrawApple(i32 x, i32 y)
     __framebuffer[__cfb][8 * y + 7][x] = 0x3C;
 }
 
-static void framebufferDrawRect(i32 fx, i32 fy, i32 tx, i32 ty)
-{
+static void framebufferDrawRect(i32 fx, i32 fy, i32 tx, i32 ty) {
     for (i32 y = fy; y < ty; y++) {
         for (i32 x = fx; x < tx; x++) {
             framebufferSetPixel(x, y);
@@ -85,8 +80,7 @@ static void framebufferDrawRect(i32 fx, i32 fy, i32 tx, i32 ty)
     }
 }
 
-static void framebufferClearLine(i32 fx, i32 fy, i32 tx, i32 ty)
-{
+static void framebufferClearLine(i32 fx, i32 fy, i32 tx, i32 ty) {
     r32 k = (r32)(ty - fy) / (r32)(tx - fx);
     r32 m = (r32)(fy - k * fx);
     
@@ -94,25 +88,36 @@ static void framebufferClearLine(i32 fx, i32 fy, i32 tx, i32 ty)
         framebufferClearPixel((i32)x, (i32)(k * x + m));
 }
 
-static void framebuffeClearRect(i32 fx, i32 fy, i32 tx, i32 ty)
-{
+static void framebuffeClearRect(i32 fx, i32 fy, i32 tx, i32 ty) {
     for (i32 y = fy; y < ty; y++) {
         for (i32 x = fx; x < tx; x++)
             framebufferClearPixel(x, y);
     }
 }
 
-static void framebufferClear()
-{
+static void framebufferClear() {
     for (i32 y = 0; y < FRAMEBUFFER_HEIGHT; y++) {
         for (i32 x = 0; x < FRAMEBUFFER_WIDTH; x++)
             __framebuffer[__cfb][y][x] = 0;
     }
 }
 
+static void framebufferDisplayNoSwap() {
+    u8 current = 0;
+    //u8 old = 0;
+    for (i32 y = 0; y < FRAMEBUFFER_HEIGHT; y++) {
+        for (i32 x = 0; x < FRAMEBUFFER_WIDTH; x++) {
+            current = __framebuffer[__cfb][y][x];
+
+            display_set_pixel_cursor(x, y);
+            display_write_data(current);
+            display_write_command(0xC4);
+        }
+    }
+}
+
 // display changes and swap buffers!
-static void framebufferDisplay()
-{
+static void framebufferDisplay() {
     u8 current = 0;
     u8 old = 0;
     for (i32 y = 0; y < FRAMEBUFFER_HEIGHT; y++) {

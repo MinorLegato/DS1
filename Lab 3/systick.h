@@ -3,8 +3,12 @@
 
 #include "ats.h"
 
+b32 isLogging = 0;
+
+// forward decl
 void tempStartMesurment();
 i32 tempReady();
+void loggCurrentTemp();
 
 i32 __systick_counter = 0;
 
@@ -12,6 +16,8 @@ void SysTick_Handler(void) {
     __systick_counter++;
 
     if (tempReady()) {
+        if (isLogging) { loggCurrentTemp(); }
+
         tempStartMesurment();
     }
 }
