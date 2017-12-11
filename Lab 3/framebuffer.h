@@ -104,11 +104,9 @@ static void framebufferClear() {
 
 static void framebufferDisplayNoSwap() {
     u8 current = 0;
-    //u8 old = 0;
     for (i32 y = 0; y < FRAMEBUFFER_HEIGHT; y++) {
         for (i32 x = 0; x < FRAMEBUFFER_WIDTH; x++) {
             current = __framebuffer[__cfb][y][x];
-
             display_set_pixel_cursor(x, y);
             display_write_data(current);
             display_write_command(0xC4);

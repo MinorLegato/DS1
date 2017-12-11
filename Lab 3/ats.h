@@ -10,33 +10,31 @@
 
 typedef int32_t b32;
 
-typedef float r32;
-typedef double r64;
+typedef float   r32;
+typedef double  r64;
 
-typedef uint8_t u8;
+typedef uint8_t  u8;
 typedef uint16_t u16;
 typedef uint32_t u32;
 typedef uint64_t u64;
 
-typedef int8_t i8;
+typedef int8_t  i8;
 typedef int16_t i16;
 typedef int32_t i32;
 typedef int64_t i64;
 
-#define RANDI(min, max) (rand() % ((max) - (min)) + (min))
-#define RANDF(min, max) ((rand() / (r32)RAND_MAX) * fabs((r32)(max) - (r32)(min)) + (r32)(min))
+#define randi(min, max) (rand() % ((max) - (min)) + (min))
+#define randf(min, max) ((rand() / (r32)RAND_MAX) * fabs((r32)(max) - (r32)(min)) + (r32)(min))
 
-#define ARRAY(T, N) struct { i32 size; T data[N]; }
+#define Array(T, N) struct { i32 size; T data[N]; }
 
-#define ADD(arr, e)     do { (arr)->data[(arr)->size++] = (e); } while (0);
-#define REM(arr, i)     do { (arr)->data[(i)] = (arr)->data[--(arr)->size]; } while (0);
-#define CLEAR(arr)      do { (arr)->size = 0; } while (0);
-#define SET(arr, i, e)  do { (arr)->data[i] = e; } while (0);
+#define array_add(arr, e)     do { (arr)->data[(arr)->size++] = (e); } while (0);
+#define array_rem(arr, i)     do { (arr)->data[(i)] = (arr)->data[--(arr)->size]; } while (0);
+#define array_clear(arr)      do { (arr)->size = 0; } while (0);
+#define array_set(arr, i, e)  do { (arr)->data[i] = e; } while (0);
 
-#define GET(arr, i) ((arr)->data[(i)])
-#define SIZE(arr)   ((arr)->size)
-
-#define FOR_EACH(INDEX, ARRAY) for (i32 INDEX = 0; INDEX < getSize(ARRAY); INDEX++)
+#define array_get(arr, i) ((arr)->data[(i)])
+#define array_size(arr)   ((arr)->size)
 
 #define PI (3.14159265359f)
 
@@ -68,40 +66,40 @@ static inline v2 V2(r32 x, r32 y) {
     v2 v = { x, y }; return v;
 }
 
-static inline v2 v2Add(v2 a, v2 b) {
+static inline v2 v2_add(v2 a, v2 b) {
     a.x += b.x;
     a.y += b.y;
     return a;
 }
 
-static inline v2 v2Sub(v2 a, v2 b) {
+static inline v2 v2_sub(v2 a, v2 b) {
     a.x -= b.x;
     a.y -= b.y;
     return a;
 }
 
-static inline v2 v2Mul(v2 a, r32 s) {
+static inline v2 v2_mul(v2 a, r32 s) {
     a.x *= s;
     a.y *= s;
     return a;
 }
 
-static inline v2 v2Div(v2 a, r32 s) {
+static inline v2 v2_div(v2 a, r32 s) {
     a.x /= s;
     a.y /= s;
     return a;
 }
 
-static inline r32 len2(v2 a) {
+static inline r32 v2_len_sq(v2 a) {
     return a.x * a.x + a.y * a.y;
 }
 
 static inline r32 len(v2 a) {
-    return sqrtf(len2(a));
+    return sqrtf(v2_len_sq(a));
 }
 
 static inline r32 revLen(v2 a) {
-    return rsqrt(len2(a));
+    return rsqrt(v2_len_sq(a));
 }
 
 static inline v2 norm(v2 a) {
@@ -109,25 +107,25 @@ static inline v2 norm(v2 a) {
     return V2(a.x / l, a.y / l);
 }
 
-static inline r32 dot(v2 a, v2 b) {
+static inline r32 v2_dot(v2 a, v2 b) {
     return a.x * b.x + a.y * b.y;
 }
 
-static inline r32 det(v2 a, v2 b) {
+static inline r32 v2_det(v2 a, v2 b) {
     return a.x * b.y - b.x * a.y;
 }
 
-static inline r32 dist(v2 a, v2 b) {
+static inline r32 v2_dist(v2 a, v2 b) {
     v2 c = { a.x - b.x, a.y - b.y };
     return len(c);
 }
 
-static inline r32 dist2(v2 a, v2 b) {
+static inline r32 v2_dist_sq(v2 a, v2 b) {
     v2 c = { a.x - b.x, a.y - b.y };
-    return len2(c);
+    return v2_len_sq(c);
 }
 
-static inline v2 v2Dir(v2 from, v2 to) {
+static inline v2 v2_dir(v2 from, v2 to) {
     v2 dir = { to.x - from.x, to.y - from.y };
     r32 rlen = revLen(dir);
     dir.x *= rlen;
@@ -135,17 +133,17 @@ static inline v2 v2Dir(v2 from, v2 to) {
     return dir;
 }
 
-static inline v2 v2Round(v2 a) {
+static inline v2 v2_round(v2 a) {
     return V2(roundf(a.x), roundf(a.y));
 }
 
-static inline v2 rotateRad(v2 v, r32 rad) {
+static inline v2 rotate_rad(v2 v, r32 rad) {
     return V2(
         v.x * cosf(rad) - v.y * sinf(rad),
         v.x * sinf(rad) + v.y * cosf(rad));
 }
 
-static inline v2 rotateDeg(v2 v, r32 deg) {
+static inline v2 rotate_deg(v2 v, r32 deg) {
     r32 rad = TO_RAD(deg);
     return V2(
         v.x * cosf(rad) - v.y * sinf(rad),

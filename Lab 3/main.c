@@ -26,13 +26,9 @@
 #define MINUTES     (60 * 24)
 #define MAX_TEMPS   (DAYS * MINUTES)
 
-static struct {
-    ARRAY(r32, 7) min;
-    ARRAY(r32, 7) max;
-    ARRAY(r32, 7) avg;
-    
-    ARRAY(u16, MAX_TEMPS) array;
-} temp;
+#define TEMP_INDEX(M, D)    ((D) * MINUTES + (M))
+
+static Array(u16, MAX_TEMPS) temp_array;
 
 static void loggCurrentTemp() {
     static int last = 0;
@@ -40,71 +36,122 @@ static void loggCurrentTemp() {
     i32 t = systickGetTime();
 
     if (t > (last + 1000)) {
-        ADD(&temp.array, tempGetCompressed());
+        array_add(&temp_array, tempGetCompressed());
         last = t;
     }
 }
 
 static u16 tempNoise(r32 x) {
-    r32 noise = perlinNoise(x * 0.1f, 0.1f, 0.0f);
-    return 30000 + (u16)(12000.0f * noise);
+    r32 noise = perlinNoise(x * 0.5f + 10000.0f, 0.5f, 0.0f);
+    return 30000 + (u16)(15000.0f * noise);
 }
 
 static void randomTempArray() {
-    CLEAR(&temp.min);
-    CLEAR(&temp.max);
-    CLEAR(&temp.avg);
-    
-    CLEAR(&temp.array);
+    array_clear(&temp_array);
     
     for (i32 i = 0; i < DAYS; i++) {
-        r32 min = 100;
-        r32 max = -100;
-        r32 avg = 0;
-        
         for (i32 j = 0; j < MINUTES; j++) {
             u16 n = tempNoise(i);
-            ADD(&temp.array, n);
-            
-            r32 t = tempDecompress(n);
-            if (t < min) min = t;
-            if (t > max) max = t;
-            avg += t;
+            array_add(&temp_array, n);
         }
-        
-        ADD(&temp.min, min);
-        ADD(&temp.max, max);
-        ADD(&temp.avg, avg / MINUTES);
     }
 }
 
 static void startLogging()  { isLogging = 1; }
 static void stopLogging()   { isLogging = 0; }
-
-static void clearLog() {
-    CLEAR(&temp.min);
-    CLEAR(&temp.max);
-    CLEAR(&temp.avg);
-    CLEAR(&temp.array);
-}
+static void clearLog()      { array_clear(&temp_array); }
 
 static void showTempSum() {
+    Array(r32, 7) min;
+    Array(r32, 7) max;
+    Array(r32, 7) avg;
+
+    array_clear(&min);
+    array_clear(&max);
+    array_clear(&avg);
+
+    for (i32 i = 0; (i < DAYS) && (TEMP_INDEX(0, i) < array_size(&temp_array)); i++) {
+        r32 temp = tempDecompress(array_get(&temp_array, TEMP_INDEX(0, i))); 
+
+        r32 tmin = temp;
+        r32 tmax = temp;
+        r32 tavg = temp;
+
+        i32 j;
+        for (j = 1; (j < MINUTES) && (TEMP_INDEX(j, i) < array_size(&temp_array)); j++) {
+            temp = tempDecompress(array_get(&temp_array, TEMP_INDEX(j, i))); 
+
+            tmin = fminf(temp, tmin);
+            tmax = fmaxf(temp, tmax);
+
+            tavg += temp;
+        }
+
+        array_add(&min, tmin);
+        array_add(&max, tmax);
+        array_add(&avg, tavg / (r32)MINUTES);
+
+        printf("%f %f %f\n", tmin, tmax, tavg / (r32)MINUTES);
+    }
+
     b32 running = 1;
     while (running) {
         if (keypadRead() == 1) { running = 0; }
+        // draw interface
         renderString("Summary:", 0, 0, 2.0f, 2.0f);
-        for (i32 i = 0; i < SIZE(&temp.min); i++) {
-            renderI32(GET(&temp.min, i), 32 * i, 32, 1.0f, 1.0f);
-            renderI32(GET(&temp.max, i), 32 * i, 64, 1.0f, 1.0f);
-            renderI32(GET(&temp.avg, i), 32 * i, 98, 1.0f, 1.0f);
+
+        renderString("mon", 30, 0 * 12 + 32, 1, 1);
+        renderString("tue", 30, 1 * 12 + 32, 1, 1);
+        renderString("whe", 30, 2 * 12 + 32, 1, 1);
+        renderString("thu", 30, 3 * 12 + 32, 1, 1);
+        renderString("fri", 30, 4 * 12 + 32, 1, 1);
+        renderString("sat", 30, 5 * 12 + 32, 1, 1);
+        renderString("sun", 30, 6 * 12 + 32, 1, 1);
+
+        renderString("min", 64,  18, 1, 1);
+        renderString("max", 128, 18, 1, 1);
+        renderString("avg", 192, 18, 1, 1);
+
+        // draw data
+        for (i32 i = 0; i < array_size(&min); i++) {
+            renderR32(array_get(&min, i), 64,  32 + 12 * i, 1, 1);
+            renderR32(array_get(&max, i), 128, 32 + 12 * i, 1, 1);
+            renderR32(array_get(&avg, i), 192, 32 + 12 * i, 1, 1);
         }
+
         framebufferDisplay();
         delay(1000000);
     }
 }
 
 static void showTempGraph() {
-    // TODO(anton):
+    r32 temp = tempDecompress(array_get(&temp_array, 0));
+
+    r32 min = temp;
+    r32 max = temp;
+
+    for (i32 i = 1; i < array_size(&temp_array); i++) {
+        temp = tempDecompress(array_get(&temp_array, i));
+
+        min  = fminf(temp, min);
+        max  = fmaxf(temp, max);
+    }
+
+    i32 x = 0;
+    r32 h = max - min;
+
+    while (keypadRead() != 1) {
+        if (keypadRead() == 6) { x++; }
+        for (i32 i = 0; i < DISPLAY_PIXEL_WIDTH; i++) {
+            r32 temp = tempDecompress(array_get(&temp_array, x + i));
+
+            temp = (min < 0.0f? temp + min : temp - min) / h;
+
+            framebufferSetPixel(i, DISPLAY_PIXEL_HEIGHT - (i32)(temp));
+        }
+
+        framebufferDisplay();
+    }
 }
 
 // ===================================== MAIN MENU ======================================== //
@@ -135,18 +182,17 @@ static void mainMenu() {
         sprintf(strBuffer, "temp: %.2f", tempGetCurrent());
         renderString(strBuffer, 132, 16, 1.0f, 1.0f);
         
-        sprintf(strBuffer, "data: %d", SIZE(&temp.array));
+        sprintf(strBuffer, "data: %d", array_size(&temp_array));
         renderString(strBuffer, 132, 32, 1.0f, 1.0f);
         
         sprintf(strBuffer, "max:  %d",   MAX_TEMPS);
         renderString(strBuffer, 132, 48, 1.0f, 1.0f);
         
-        
         for (i32 i = 0; i < menuSize; i++) {
             renderString(menu[i].name, 16, 16 + i * spacing, 1.0f, 1.0f);
         }
         
-        renderAscii('*', 0, 16 + cursor * spacing, 1.0f, 1.0f);
+        renderString("->", 0, 16 + cursor * spacing, 1.0f, 1.0f);
         
         switch (keypadRead()) {
             case 5: { if (menu[cursor].run) menu[cursor].run(); } break;
@@ -159,13 +205,6 @@ static void mainMenu() {
         if (cursor < 0) { cursor = menuSize - 1; }
         if (cursor >= menuSize) { cursor = 0; }
         
-        framebufferClearPixel(0, 1);
-        framebufferClearPixel(0, 2);
-        framebufferClearPixel(0, 3);
-        framebufferClearPixel(0, 4);
-        framebufferClearPixel(0, 5);
-        framebufferClearPixel(0, 6);
-        
         framebufferDisplay();
         
         delay(1000000);
@@ -176,14 +215,14 @@ static void mainMenu() {
 
 int main() {
     SystemInit();
-    
+
     initSystick();
     initKeypad();
     initDisplay();
     initServo();
     initTemp();
     initLightSensor();
-    
+
     tempStartMesurment();
    
     mainMenu();

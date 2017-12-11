@@ -8,7 +8,7 @@
 #include "framebuffer.h"
 
 // ascii bitmaps from ' ' -> '~'
-static u64 bitascii[128] = {
+static const u64 bitascii[128] = {
     0x000000000000000000,   // ' '
     0x000008000808080800,   // '!'
     0x000000000014140000,
@@ -173,11 +173,11 @@ static __INLINE void renderI32(i32 n, r32 x, r32 y, r32 scale_x, r32 scale_y) {
 
 static __INLINE void renderR32(r32 n, r32 x, r32 y, r32 scale_x, r32 scale_y) {
     static char buffer[32];
-    sprintf(buffer, "%.2f", n);
+    sprintf(buffer, "%.1f", n);
     renderString(buffer, x, y, scale_x, scale_y);
 }
 
-static inline void renderStringBox(const char* str, r32 x, r32 y, r32 w, r32 h) {
+static __INLINE void renderStringBox(const char* str, r32 x, r32 y, r32 w, r32 h) {
     i32 slen = strlen(str);
     r32 x_scale = w / ((r32)slen * 8.0f);
     r32 y_scale = h / 8.0f;
@@ -187,7 +187,7 @@ static inline void renderStringBox(const char* str, r32 x, r32 y, r32 w, r32 h) 
     }
 }
 
-static inline void renderNumberBox(i32 n, r32 x, r32 y, r32 w, r32 h) {
+static __INLINE void renderNumberBox(i32 n, r32 x, r32 y, r32 w, r32 h) {
     static char buffer[32];
     sprintf(buffer, "%d", n);
     renderStringBox(buffer, x, y, w, h);
