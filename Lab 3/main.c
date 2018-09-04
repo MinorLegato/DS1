@@ -33,7 +33,7 @@ static Array(u16, MAX_TEMPS) temp_array;
 static void loggCurrentTemp() {
     static int last = 0;
 
-    i32 t = systickGetTime();
+    int32_t t = systickGetTime();
 
     if (t > (last + 1000)) {
         array_add(&temp_array, tempGetCompressed());
@@ -41,16 +41,16 @@ static void loggCurrentTemp() {
     }
 }
 
-static u16 tempNoise(r32 x) {
-    r32 noise = perlinNoise(x * 0.5f + 10000.0f, 0.5f, 0.0f);
+static u16 tempNoise(float x) {
+    float noise = perlinNoise(x * 0.5f + 10000.0f, 0.5f, 0.0f);
     return 30000 + (u16)(15000.0f * noise);
 }
 
 static void randomTempArray() {
     array_clear(&temp_array);
     
-    for (i32 i = 0; i < DAYS; i++) {
-        for (i32 j = 0; j < MINUTES; j++) {
+    for (int32_t i = 0; i < DAYS; i++) {
+        for (int32_t j = 0; j < MINUTES; j++) {
             u16 n = tempNoise(i);
             array_add(&temp_array, n);
         }
@@ -62,22 +62,22 @@ static void stopLogging()   { isLogging = 0; }
 static void clearLog()      { array_clear(&temp_array); }
 
 static void showTempSum() {
-    Array(r32, 7) min;
-    Array(r32, 7) max;
-    Array(r32, 7) avg;
+    Array(float, 7) min;
+    Array(float, 7) max;
+    Array(float, 7) avg;
 
     array_clear(&min);
     array_clear(&max);
     array_clear(&avg);
 
-    for (i32 i = 0; (i < DAYS) && (TEMP_INDEX(0, i) < array_size(&temp_array)); i++) {
-        r32 temp = tempDecompress(array_get(&temp_array, TEMP_INDEX(0, i))); 
+    for (int32_t i = 0; (i < DAYS) && (TEMP_INDEX(0, i) < array_size(&temp_array)); i++) {
+        float temp = tempDecompress(array_get(&temp_array, TEMP_INDEX(0, i))); 
 
-        r32 tmin = temp;
-        r32 tmax = temp;
-        r32 tavg = temp;
+        float tmin = temp;
+        float tmax = temp;
+        float tavg = temp;
 
-        i32 j;
+        int32_t j;
         for (j = 1; (j < MINUTES) && (TEMP_INDEX(j, i) < array_size(&temp_array)); j++) {
             temp = tempDecompress(array_get(&temp_array, TEMP_INDEX(j, i))); 
 
@@ -89,9 +89,9 @@ static void showTempSum() {
 
         array_add(&min, tmin);
         array_add(&max, tmax);
-        array_add(&avg, tavg / (r32)MINUTES);
+        array_add(&avg, tavg / (float)MINUTES);
 
-        printf("%f %f %f\n", tmin, tmax, tavg / (r32)MINUTES);
+        printf("%f %f %f\n", tmin, tmax, tavg / (float)MINUTES);
     }
 
     b32 running = 1;
@@ -113,7 +113,7 @@ static void showTempSum() {
         renderString("avg", 192, 18, 1, 1);
 
         // draw data
-        for (i32 i = 0; i < array_size(&min); i++) {
+        for (int32_t i = 0; i < array_size(&min); i++) {
             renderR32(array_get(&min, i), 64,  32 + 12 * i, 1, 1);
             renderR32(array_get(&max, i), 128, 32 + 12 * i, 1, 1);
             renderR32(array_get(&avg, i), 192, 32 + 12 * i, 1, 1);
@@ -125,29 +125,29 @@ static void showTempSum() {
 }
 
 static void showTempGraph() {
-    r32 temp = tempDecompress(array_get(&temp_array, 0));
+    float temp = tempDecompress(array_get(&temp_array, 0));
 
-    r32 min = temp;
-    r32 max = temp;
+    float min = temp;
+    float max = temp;
 
-    for (i32 i = 1; i < array_size(&temp_array); i++) {
+    for (int32_t i = 1; i < array_size(&temp_array); i++) {
         temp = tempDecompress(array_get(&temp_array, i));
 
         min  = fminf(temp, min);
         max  = fmaxf(temp, max);
     }
 
-    i32 x = 0;
-    r32 h = max - min;
+    int32_t x = 0;
+    float h = max - min;
 
     while (keypadRead() != 1) {
         if (keypadRead() == 6) { x++; }
-        for (i32 i = 0; i < DISPLAY_PIXEL_WIDTH; i++) {
-            r32 temp = tempDecompress(array_get(&temp_array, x + i));
+        for (int32_t i = 0; i < DISPLAY_PIXEL_WIDTH; i++) {
+            float temp = tempDecompress(array_get(&temp_array, x + i));
 
             temp = (min < 0.0f? temp + min : temp - min) / h;
 
-            framebufferSetPixel(i, DISPLAY_PIXEL_HEIGHT - (i32)(temp));
+            framebufferSetPixel(i, DISPLAY_PIXEL_HEIGHT - (int32_t)(temp));
         }
 
         framebufferDisplay();
@@ -168,13 +168,13 @@ static const MenuOption menu[] = {
     { "play snake",    runSnakeGame }
 };
 
-static const i32 menuSize = sizeof (menu) / sizeof(MenuOption);
+static const int32_t menuSize = sizeof (menu) / sizeof(MenuOption);
 
 static void mainMenu() {
     char strBuffer[16];
     
-    r32 spacing = 16.0f;
-    i32 cursor = 0;
+    float spacing = 16.0f;
+    int32_t cursor = 0;
     
     while (1) {
         renderStringBox("Main Menu", 0.0f, 0.0f, DISPLAY_PIXEL_WIDTH, DISPLAY_PIXEL_HEIGHT / 10);
@@ -188,7 +188,7 @@ static void mainMenu() {
         sprintf(strBuffer, "max:  %d",   MAX_TEMPS);
         renderString(strBuffer, 132, 48, 1.0f, 1.0f);
         
-        for (i32 i = 0; i < menuSize; i++) {
+        for (int32_t i = 0; i < menuSize; i++) {
             renderString(menu[i].name, 16, 16 + i * spacing, 1.0f, 1.0f);
         }
         

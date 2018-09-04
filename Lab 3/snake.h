@@ -11,25 +11,24 @@
 #include "framebuffer.h"
 #include "keypad.h"
 
-
-STRUCT(SnakeState) {
-    i16 head;
-    i16 tail;
+typedef struct SnakeState {
+    int16_t head;
+    int16_t tail;
     
-    i8 dir_x;
-    i8 dir_y;
+    int8_t dir_x;
+    int8_t dir_y;
     
-    i8 fdir_x;
-    i8 fdir_y;
+    int8_t fdir_x;
+    int8_t fdir_y;
     
-    i8 apple_x;
-    i8 apple_y;
+    int8_t apple_x;
+    int8_t apple_y;
     
-    i8 xs[DISPLAY_SIZE];
-    i8 ys[DISPLAY_SIZE];
+    int8_t xs[DISPLAY_SIZE];
+    int8_t ys[DISPLAY_SIZE];
     
-    u32 board[DISPLAY_SIZE];
-};
+    uint32_t board[DISPLAY_SIZE];
+} SnakeState;
 
 static void initSnakeState(SnakeState* snake) {
     memset(snake, 0, sizeof *snake);
@@ -67,7 +66,7 @@ void runSnakeGame() {
     //display_clear();
     
     while (game_running) {
-        i32 key = keypadRead();
+        int key = keypadRead();
         
         if (key) {
             if (key == 10) game_running = 0;

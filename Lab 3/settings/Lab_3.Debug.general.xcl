@@ -1,14 +1,14 @@
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.5\arm\bin\armproc.dll" 
+"D:\IAR Systems\Embedded Workbench 8.1\arm\bin\armproc.dll" 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.5\arm\bin\armjlink2.dll" 
+"D:\IAR Systems\Embedded Workbench 8.1\arm\bin\armjlink2.dll" 
 
-"D:\GitHub2\DS1\Lab 3\Debug\Exe\Lab_3.out" 
+"C:\Users\Anton\Documents\GitHub\DS1\Lab 3\Debug\Exe\Lab_3.out" 
 
---plugin "C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.5\arm\bin\armbat.dll" 
+--plugin="D:\IAR Systems\Embedded Workbench 8.1\arm\bin\armbat.dll" 
 
---device_macro "C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.5\arm\config\debugger\Atmel\SAM3XA.dmac" 
+--device_macro="D:\IAR Systems\Embedded Workbench 8.1\arm\config\debugger\Microchip\SAM3XA.dmac" 
 
---macro "C:\Users\Anton\OneDrive\We hate Frans\Weatherstation\Lab 1\arduino_due_x_sram.mac" 
+--macro="C:\Users\Anton\OneDrive\We hate Frans\Weatherstation\Lab 1\arduino_due_x_sram.mac" 
 
 
 

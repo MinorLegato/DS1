@@ -1,22 +1,37 @@
 ###############################################################################
 #
-# IAR ELF Linker V7.80.4.12462/W32 for ARM                11/Dec/2017  17:07:27
-# Copyright 2007-2017 IAR Systems AB.
+# IAR ELF Linker V8.30.1.114/W32 for ARM                  03/Sep/2018  17:09:06
+# Copyright 2007-2018 IAR Systems AB.
 #
-#    Output file  =  D:\GitHub2\DS1\Lab 3\Debug\Exe\Lab_3.out
-#    Map file     =  D:\GitHub2\DS1\Lab 3\Debug\List\Lab_3.map
+#    Output file  =  
+#        C:\Users\Anton\Documents\GitHub\DS1\Lab 3\Debug\Exe\Lab_3.out
+#    Map file     =  
+#        C:\Users\Anton\Documents\GitHub\DS1\Lab 3\Debug\List\Lab_3.map
 #    Command line =  
-#        "D:\GitHub2\DS1\Lab 3\Debug\Obj\cstartup.o" "D:\GitHub2\DS1\Lab
-#        3\Debug\Obj\exceptions.o" "D:\GitHub2\DS1\Lab 3\Debug\Obj\main.o"
-#        "D:\GitHub2\DS1\Lab 3\Debug\Obj\startup_sam3x.o" "D:\GitHub2\DS1\Lab
-#        3\Debug\Obj\system_sam3x.o" -o "D:\GitHub2\DS1\Lab
-#        3\Debug\Exe\Lab_3.out" --redirect _Printf=_PrintfFull --redirect
-#        _Scanf=_ScanfFull --map "D:\GitHub2\DS1\Lab 3\Debug\List\Lab_3.map"
-#        --config "C:\Program Files (x86)\IAR Systems\Embedded Workbench
-#        7.5\arm\config\linker\Atmel\sam3x8e\sram.icf" --semihosting --entry
-#        __iar_program_start --vfe
+#        -f C:\Users\Anton\AppData\Local\Temp\EWEDD1.tmp
+#        ("C:\Users\Anton\Documents\GitHub\DS1\Lab 3\Debug\Obj\cstartup.o"
+#        "C:\Users\Anton\Documents\GitHub\DS1\Lab 3\Debug\Obj\exceptions.o"
+#        "C:\Users\Anton\Documents\GitHub\DS1\Lab 3\Debug\Obj\main.o"
+#        "C:\Users\Anton\Documents\GitHub\DS1\Lab 3\Debug\Obj\startup_sam3x.o"
+#        "C:\Users\Anton\Documents\GitHub\DS1\Lab 3\Debug\Obj\system_sam3x.o"
+#        --no_out_extension -o "C:\Users\Anton\Documents\GitHub\DS1\Lab
+#        3\Debug\Exe\Lab_3.out" --redirect _Printf=_PrintfFullNoMb --redirect
+#        _Scanf=_ScanfFullNoMb --map "C:\Users\Anton\Documents\GitHub\DS1\Lab
+#        3\Debug\List\Lab_3.map" --config "D:\IAR Systems\Embedded Workbench
+#        8.1\arm\config\linker\Microchip\sam3x8e\sram.icf" --semihosting
+#        --entry __iar_program_start --vfe --text_out locale)
 #
 ###############################################################################
+
+*******************************************************************************
+*** MESSAGES
+***
+
+Warning[Lt009]: Inconsistent wchar_t size
+            exceptions.o has wchar_t size 16 bits
+            main.o and 29 other objects, some of them in shb_l.a and 21 other
+                      libraries have wchar_t size 32 bits
+
 
 *******************************************************************************
 *** RUNTIME MODEL ATTRIBUTES
@@ -24,153 +39,174 @@
 
 CppFlavor       = *
 __SystemLibrary = DLib
+__dlib_version  = 6
+
+
+*******************************************************************************
+*** HEAP SELECTION
+***
+
+The basic heap was selected because some modules are built with
+size limitations (and not runtime checking), and --advanced_heap
+was not specified.
 
 
 *******************************************************************************
 *** PLACEMENT SUMMARY
 ***
 
-"A0":  place at 0x20070000 { ro section .intvec };
-"P1":  place in [from 0x20070000 to 0x20087fff] { ro };
-"P2":  place in [from 0x20070000 to 0x20087fff] { rw, block CSTACK, block HEAP };
+"A0":  place at 0x2007'0000 { ro section .intvec };
+"P1":  place in [from 0x2007'0000 to 0x2008'7fff] { ro };
+define block CSTACK with size = 4K, alignment = 8 { };
+define block HEAP with size = 8K, alignment = 8 { };
+"P2":  place in [from 0x2007'0000 to 0x2008'7fff] {
+          rw, block CSTACK, block HEAP };
 initialize by copy with packing = copy, complex ranges { rw };
 
-  Section             Kind        Address    Size  Object
-  -------             ----        -------    ----  ------
+  Section            Kind         Address    Size  Object
+  -------            ----         -------    ----  ------
 "A0":                                        0xf4
-  .intvec                      0x20070000    0xf4  <Block>
-    .intvec           const    0x20070000    0xf4  startup_sam3x.o [1]
-                             - 0x200700f4    0xf4
+  .intvec                     0x2007'0000    0xf4  <Block>
+    .intvec          const    0x2007'0000    0xf4  startup_sam3x.o [1]
+                            - 0x2007'00f4    0xf4
 
-"P1-P2", part 1 of 4:                      0x47dc
-  .text               ro code  0x200700f4  0x1dd2  main.o [1]
-  .text               ro code  0x20071ec6     0xa  xsprout.o [3]
-  .text               ro code  0x20071ed0    0xe6  FltSub.o [4]
-  .text               ro code  0x20071fb6     0x2  exceptions.o [1]
-  .text               ro code  0x20071fb8    0xd8  FltMul.o [4]
-  .text               ro code  0x20072090    0x84  FltAdd.o [4]
-  .text               ro code  0x20072114    0x24  FltCmpGe.o [4]
-  .text               ro code  0x20072138    0x44  FltToS32.o [4]
-  .text               ro code  0x2007217c    0x2e  I32ToFlt.o [4]
-  .text               ro code  0x200721ac    0xfc  FltDiv.o [4]
-  .text               ro code  0x200722a8    0x4e  FltToDbl.o [4]
-  .text               ro code  0x200722f8    0xe8  DblAdd.o [4]
-  .text               ro code  0x200723e0   0x1a2  DblMul.o [4]
-  .text               ro code  0x20072584    0x58  DblToI32.o [4]
-  .text               ro code  0x200725dc    0x66  ABImemset.o [5]
-  .text               ro code  0x20072644    0x1e  U64Shr.o [5]
-  .text               ro code  0x20072664    0x34  sprintf.o [3]
-  .text               ro code  0x20072698    0x36  strlen.o [5]
-  .text               ro code  0x200726d0    0xe0  rand.o [3]
-  .text               ro code  0x200727b0     0xa  clock.o [6]
-  .text               ro code  0x200727bc    0x24  fminf.o [4]
-  .text               ro code  0x200727e0    0x24  fmaxf.o [4]
-  .text               ro code  0x20072804    0x24  printf.o [3]
-  .text               ro code  0x20072828    0x24  FltCmpLe.o [4]
-  .text               ro code  0x2007284c    0xb8  system_sam3x.o [1]
-  .text               ro code  0x20072904   0x180  DblSub.o [4]
-  .text               ro code  0x20072a84   0xdd2  xprintffull.o [3]
-  .text               ro code  0x20073856     0x2  xtls.o [3]
-  .text               ro code  0x20073858    0x16  strchr.o [5]
-  .text               ro code  0x20073870    0x58  memchr.o [5]
-  .text               ro code  0x200738c8    0xee  I64DivMod.o [5]
-  .text               ro code  0x200739b8    0x76  ABImemcpy_unaligned.o [5]
-  .text               ro code  0x20073a2e    0x44  xdnorm.o [4]
-  .text               ro code  0x20073a74    0x2e  DblCmpLe.o [4]
-  .text               ro code  0x20073aa4    0x2e  DblCmpGe.o [4]
-  .text               ro code  0x20073ad4   0x10c  xdscale.o [4]
-  .text               ro code  0x20073be0    0x30  I32ToDbl.o [4]
-  .text               ro code  0x20073c10   0x256  DblDiv.o [4]
-  .text               ro code  0x20073e66     0xe  div.o [3]
-  .text               ro code  0x20073e74     0x2  I64DivZer.o [5]
-  .text               ro code  0x20073e76    0x2c  copy_init3.o [5]
-  .rodata             const    0x20073ea8   0x400  main.o [1]
-  .rodata             const    0x200742a8   0x200  main.o [1]
-  .rodata             const    0x200744a8    0xc0  main.o [1]
-  .text               ro code  0x20074568    0x6c  iarttio.o [6]
-  .text               ro code  0x200745d4     0x8  XShttio.o [3]
-  .rodata             const    0x200745dc    0x40  main.o [1]
-  .text               ro code  0x2007461c    0x40  zero_init3.o [5]
-  .rodata             const    0x2007465c    0x38  main.o [1]
-  .text               ro code  0x20074694    0x34  startup_sam3x.o [1]
-  .text               ro code  0x200746c8     0xc  cstartup.o [1]
-  .text               ro code  0x200746d4    0x1a  cmain.o [5]
-  .text               ro code  0x200746f0    0x28  data_init.o [5]
-  .text               ro code  0x20074718     0x4  exit.o [3]
-  .text               ro code  0x2007471c     0xa  cexit.o [5]
-  .text               ro code  0x20074728    0x14  exit.o [6]
-  .text               ro code  0x2007473c    0x28  putchar.o [3]
-  .text               ro code  0x20074764    0x10  write.o [6]
-  .text               ro code  0x20074774    0x1e  dwrite.o [6]
-  .text               ro code  0x20074792    0x20  iarwstd.o [6]
-  .text               ro code  0x200747b2    0x22  iarwrite.o [6]
-  .iar.init_table     const    0x200747d4    0x24  - Linker created -
-  .text               ro code  0x200747f8    0x16  xprout.o [3]
-  .rodata             const    0x20074810    0x10  main.o [1]
-  .rodata             const    0x20074820    0x10  main.o [1]
-  .rodata             const    0x20074830    0x10  main.o [1]
-  .rodata             const    0x20074840     0xc  main.o [1]
-  .rodata             const    0x2007484c     0xc  main.o [1]
-  .rodata             const    0x20074858     0xc  main.o [1]
-  .rodata             const    0x20074864     0xc  main.o [1]
-  .rodata             const    0x20074870     0xc  main.o [1]
-  .rodata             const    0x2007487c     0xc  main.o [1]
-  .rodata             const    0x20074888     0xc  main.o [1]
-  .rodata             const    0x20074894     0xc  main.o [1]
-  .rodata             const    0x200748a0     0xc  main.o [1]
-  .rodata             const    0x200748ac     0xc  main.o [1]
-  .rodata             const    0x200748b8     0x8  main.o [1]
-  .rodata             const    0x200748c0     0x4  main.o [1]
-  .rodata             const    0x200748c4     0x4  main.o [1]
-  .rodata             const    0x200748c8     0x4  main.o [1]
-  .rodata             const    0x200748cc     0x4  main.o [1]
-  .rodata             const    0x200748d0     0x0  zero_init3.o [5]
-  .rodata             const    0x200748d0     0x0  copy_init3.o [5]
-                             - 0x200748d0  0x47dc
+"P1-P2", part 1 of 3:                      0x463c
+  .text              ro code  0x2007'00f4  0x19ea  main.o [1]
+  .text              ro code  0x2007'1ade    0x3a  zero_init3.o [4]
+  .text              ro code  0x2007'1b18    0x80  FltSub.o [3]
+  .text              ro code  0x2007'1b98    0xd8  FltMul.o [3]
+  .text              ro code  0x2007'1c70    0xe2  FltAdd.o [3]
+  .text              ro code  0x2007'1d52     0xa  xsprout.o [2]
+  .text              ro code  0x2007'1d5c    0x24  FltCmpGe.o [3]
+  .text              ro code  0x2007'1d80    0x2a  FltToS32.o [3]
+  .text              ro code  0x2007'1daa     0x2  exceptions.o [1]
+  .text              ro code  0x2007'1dac    0x24  S32ToFlt.o [3]
+  .text              ro code  0x2007'1dd0    0xfc  FltDiv.o [3]
+  .text              ro code  0x2007'1ecc    0x48  FltToDbl.o [3]
+  .text              ro code  0x2007'1f14   0x17a  DblAdd.o [3]
+  .text              ro code  0x2007'2090   0x1a2  DblMul.o [3]
+  .text              ro code  0x2007'2234    0x3a  DblToS32.o [3]
+  .text              ro code  0x2007'2270    0x66  ABImemset.o [4]
+  .text              ro code  0x2007'22d8    0x1e  U64Shr.o [4]
+  .text              ro code  0x2007'22f8    0x40  sprintf.o [2]
+  .text              ro code  0x2007'2338    0x36  strlen.o [4]
+  .text              ro code  0x2007'2370    0xa4  rand.o [2]
+  .text              ro code  0x2007'2414     0xa  clock.o [5]
+  .text              ro code  0x2007'2420    0x24  fminf.o [3]
+  .text              ro code  0x2007'2444    0x24  fmaxf.o [3]
+  .text              ro code  0x2007'2468    0x28  printf.o [2]
+  .text              ro code  0x2007'2490    0x24  FltCmpLe.o [3]
+  .text              ro code  0x2007'24b4    0xa0  system_sam3x.o [1]
+  .text              ro code  0x2007'2554    0xe2  DblSub.o [3]
+  .text              ro code  0x2007'2638   0xe26  xprintffull_nomb.o [2]
+  .text              ro code  0x2007'3460    0x16  strchr.o [4]
+  .text              ro code  0x2007'3478    0x40  xfail_s.o [2]
+  .text              ro code  0x2007'34b8    0x58  memchr.o [4]
+  .text              ro code  0x2007'3510   0x230  I64DivMod.o [4]
+  .text              ro code  0x2007'3740    0xa6  ABImemcpy.o [4]
+  .text              ro code  0x2007'37e8    0x70  frexp.o [3]
+  .text              ro code  0x2007'3858    0x2e  DblCmpLe.o [3]
+  .text              ro code  0x2007'3888    0x2e  DblCmpGe.o [3]
+  .text              ro code  0x2007'38b8   0x13a  ldexp.o [3]
+  .text              ro code  0x2007'39f4    0x22  S32ToDbl.o [3]
+  .text              ro code  0x2007'3a18   0x246  DblDiv.o [3]
+  .text              ro code  0x2007'3c60    0x28  DblToU32.o [3]
+  .text              ro code  0x2007'3c88    0x1a  U32ToDbl.o [3]
+  .text              ro code  0x2007'3ca2     0x6  abort.o [2]
+  .text              ro code  0x2007'3ca8     0x2  I64DivZer.o [4]
+  .text              ro code  0x2007'3cac    0x14  exit.o [5]
+  .text              ro code  0x2007'3cc0    0x80  iarttio.o [5]
+  .text              ro code  0x2007'3d40    0x3c  XShttio.o [2]
+  .rodata            const    0x2007'3d80   0x400  main.o [1]
+  .rodata            const    0x2007'4180   0x200  main.o [1]
+  .rodata            const    0x2007'4380    0xc0  main.o [1]
+  .rodata            const    0x2007'4440    0x40  main.o [1]
+  .rodata            const    0x2007'4480    0x38  main.o [1]
+  .text              ro code  0x2007'44b8    0x30  startup_sam3x.o [1]
+  .text              ro code  0x2007'44e8     0xc  cstartup.o [1]
+  .text              ro code  0x2007'44f4    0x1e  cmain.o [4]
+  .text              ro code  0x2007'4514    0x28  data_init.o [4]
+  .text              ro code  0x2007'453c     0x4  exit.o [2]
+  .text              ro code  0x2007'4540     0xa  cexit.o [4]
+  .text              ro code  0x2007'454a    0x2c  copy_init3.o [4]
+  .text              ro code  0x2007'4576    0x22  iarwrite.o [5]
+  .iar.init_table    const    0x2007'4598    0x24  - Linker created -
+  .text              ro code  0x2007'45bc    0x20  putchar.o [2]
+  .text              ro code  0x2007'45dc    0x10  write.o [5]
+  .text              ro code  0x2007'45ec    0x1e  dwrite.o [5]
+  .text              ro code  0x2007'460a    0x20  iarwstd.o [5]
+  .text              ro code  0x2007'462a    0x16  xprout.o [2]
+  .rodata            const    0x2007'4640    0x10  main.o [1]
+  .rodata            const    0x2007'4650    0x10  main.o [1]
+  .rodata            const    0x2007'4660    0x10  main.o [1]
+  .rodata            const    0x2007'4670     0xc  main.o [1]
+  .rodata            const    0x2007'467c     0xc  main.o [1]
+  .rodata            const    0x2007'4688     0xc  main.o [1]
+  .rodata            const    0x2007'4694     0xc  main.o [1]
+  .rodata            const    0x2007'46a0     0xc  main.o [1]
+  .rodata            const    0x2007'46ac     0xc  main.o [1]
+  .rodata            const    0x2007'46b8     0xc  main.o [1]
+  .rodata            const    0x2007'46c4     0xc  main.o [1]
+  .rodata            const    0x2007'46d0     0xc  main.o [1]
+  .rodata            const    0x2007'46dc     0xc  main.o [1]
+  .rodata            const    0x2007'46e8     0x8  main.o [1]
+  .rodata            const    0x2007'46f0     0x4  main.o [1]
+  .rodata            const    0x2007'46f4     0x4  main.o [1]
+  .rodata            const    0x2007'46f8     0x4  main.o [1]
+  .rodata            const    0x2007'46fc     0x4  main.o [1]
+  .rodata            const    0x2007'4700     0x0  zero_init3.o [4]
+  .rodata            const    0x2007'4700     0x0  copy_init3.o [4]
+  P1-P2 s0                    0x2007'4700    0x18  <Init block>
+    .data            inited   0x2007'4700     0x8  rand.o [2]
+    .data            inited   0x2007'4708     0x8  XShttio.o [2]
+    .data            inited   0x2007'4710     0x4  main.o [1]
+    .data            inited   0x2007'4714     0x4  system_sam3x.o [1]
+  Initializer bytes  const    0x2007'4718    0x18  <for P1-P2 s0>
+                            - 0x2007'4730  0x463c
 
-"P1-P2", part 2 of 4:                      0x1000
-  CSTACK                       0x200748d0  0x1000  <Block>
-    CSTACK            uninit   0x200748d0  0x1000  <Block tail>
-                             - 0x200758d0  0x1000
+"P1-P2", part 2 of 3:                      0x78d0
+  .bss               zero     0x2007'4730  0x4ec4  main.o [1]
+  .bss               zero     0x2007'95f4  0x1e00  main.o [1]
+  .bss               zero     0x2007'b3f4   0xb4c  main.o [1]
+  .bss               zero     0x2007'bf40    0x84  rand.o [2]
+  .bss               zero     0x2007'bfc4    0x20  main.o [1]
+  .bss               zero     0x2007'bfe4     0x4  main.o [1]
+  .bss               zero     0x2007'bfe8     0x4  main.o [1]
+  .bss               zero     0x2007'bfec     0x4  main.o [1]
+  .bss               zero     0x2007'bff0     0x4  main.o [1]
+  .bss               zero     0x2007'bff4     0x4  main.o [1]
+  .bss               zero     0x2007'bff8     0x4  xfail_s.o [2]
+  .bss               zero     0x2007'bffc     0x2  main.o [1]
+  .bss               zero     0x2007'bffe     0x1  XShttio.o [2]
+                            - 0x2007'bfff  0x78cf
 
-"P1-P2", part 3 of 4:                       0x138
-  P1-P2 s0                     0x200758d0    0x9c  <Init block>
-    __DLIB_PERTHREAD  inited   0x200758d0    0x8c  rand.o [3]
-    .data             inited   0x2007595c     0x8  XShttio.o [3]
-    .data             inited   0x20075964     0x4  main.o [1]
-    .data             inited   0x20075968     0x4  system_sam3x.o [1]
-  Initializer bytes   const    0x2007596c    0x9c  <for P1-P2 s0>
-                             - 0x20075a08   0x138
+"P1-P2", part 3 of 3:                      0x1000
+  CSTACK                      0x2007'c000  0x1000  <Block>
+    CSTACK           uninit   0x2007'c000  0x1000  <Block tail>
+                            - 0x2007'd000  0x1000
 
-"P1-P2", part 4 of 4:                      0x7848
-  .bss                zero     0x20075a08  0x4ec4  main.o [1]
-  .bss                zero     0x2007a8cc  0x1e00  main.o [1]
-  .bss                zero     0x2007c6cc   0xb4c  main.o [1]
-  .bss                zero     0x2007d218    0x20  main.o [1]
-  .bss                zero     0x2007d238     0x4  main.o [1]
-  .bss                zero     0x2007d23c     0x4  main.o [1]
-  .bss                zero     0x2007d240     0x4  main.o [1]
-  .bss                zero     0x2007d244     0x4  main.o [1]
-  .bss                zero     0x2007d248     0x4  main.o [1]
-  .bss                zero     0x2007d24c     0x2  main.o [1]
-                             - 0x2007d24e  0x7846
+Unused ranges:
+
+         From           To    Size
+         ----           --    ----
+  0x2007'd000  0x2008'7fff  0xb000
 
 
 *******************************************************************************
 *** INIT TABLE
 ***
 
-          Address     Size
-          -------     ----
+          Address      Size
+          -------      ----
 Zero (__iar_zero_init3)
-    1 destination range, total size 0x7846:
-          0x20075a08  0x7846
+    1 destination range, total size 0x78cf:
+          0x2007'4730  0x78cf
 
 Copy (__iar_copy_init3)
-    1 source range, total size 0x9c:
-          0x2007596c    0x9c
-    1 destination range, total size 0x9c:
-          0x200758d0    0x9c
+    1 source range, total size 0x18:
+          0x2007'4718    0x18
+    1 destination range, total size 0x18:
+          0x2007'4700    0x18
 
 
 
@@ -178,345 +214,361 @@ Copy (__iar_copy_init3)
 *** MODULE SUMMARY
 ***
 
-    Module                 ro code  ro data  rw data
-    ------                 -------  -------  -------
-D:\GitHub2\DS1\Lab 3\Debug\Obj: [1]
-    cstartup.o                  12
-    exceptions.o                 2
-    main.o                   7 634    2 044   30 794
-    startup_sam3x.o             52      244
-    system_sam3x.o             184        4        4
-    ------------------------------------------------
-    Total:                   7 884    2 292   30 798
-
-command line: [2]
-    ------------------------------------------------
+    Module              ro code  ro data  rw data
+    ------              -------  -------  -------
+command line/config:
+    ---------------------------------------------
     Total:
 
-dl7M_tln.a: [3]
-    XShttio.o                    8        8        8
-    div.o                       14
-    exit.o                       4
-    printf.o                    36
-    putchar.o                   40
-    rand.o                     224      140      140
-    sprintf.o                   52
-    xprintffull.o            3 538
-    xprout.o                    22
-    xsprout.o                   10
-    xtls.o                       2
-    ------------------------------------------------
-    Total:                   3 950      148      148
+C:\Users\Anton\Documents\GitHub\DS1\Lab 3\Debug\Obj: [1]
+    cstartup.o               12
+    exceptions.o              2
+    main.o                6 634    2 044   30 794
+    startup_sam3x.o          48      244
+    system_sam3x.o          160        4        4
+    ---------------------------------------------
+    Total:                6 856    2 292   30 798
 
-m7M_tl.a: [4]
-    DblAdd.o                   232
-    DblCmpGe.o                  46
-    DblCmpLe.o                  46
-    DblDiv.o                   598
-    DblMul.o                   418
-    DblSub.o                   384
-    DblToI32.o                  88
-    FltAdd.o                   132
-    FltCmpGe.o                  36
-    FltCmpLe.o                  36
-    FltDiv.o                   252
-    FltMul.o                   216
-    FltSub.o                   230
-    FltToDbl.o                  78
-    FltToS32.o                  68
-    I32ToDbl.o                  48
-    I32ToFlt.o                  46
-    fmaxf.o                     36
-    fminf.o                     36
-    xdnorm.o                    68
-    xdscale.o                  268
-    ------------------------------------------------
-    Total:                   3 362
+dl7M_tln.a: [2]
+    XShttio.o                60        8        9
+    abort.o                   6
+    exit.o                    4
+    printf.o                 40
+    putchar.o                32
+    rand.o                  164        8      140
+    sprintf.o                64
+    xfail_s.o                64                 4
+    xprintffull_nomb.o    3 622
+    xprout.o                 22
+    xsprout.o                10
+    ---------------------------------------------
+    Total:                4 088       16      153
 
-rt7M_tl.a: [5]
-    ABImemcpy_unaligned.o      118
-    ABImemset.o                102
-    I64DivMod.o                238
-    I64DivZer.o                  2
-    U64Shr.o                    30
-    cexit.o                     10
-    cmain.o                     26
-    copy_init3.o                44
-    data_init.o                 40
-    memchr.o                    88
-    strchr.o                    22
-    strlen.o                    54
-    zero_init3.o                64
-    ------------------------------------------------
-    Total:                     838
+m7M_tl.a: [3]
+    DblAdd.o                378
+    DblCmpGe.o               46
+    DblCmpLe.o               46
+    DblDiv.o                582
+    DblMul.o                418
+    DblSub.o                226
+    DblToS32.o               58
+    DblToU32.o               40
+    FltAdd.o                226
+    FltCmpGe.o               36
+    FltCmpLe.o               36
+    FltDiv.o                252
+    FltMul.o                216
+    FltSub.o                128
+    FltToDbl.o               72
+    FltToS32.o               42
+    S32ToDbl.o               34
+    S32ToFlt.o               36
+    U32ToDbl.o               26
+    fmaxf.o                  36
+    fminf.o                  36
+    frexp.o                 112
+    ldexp.o                 314
+    ---------------------------------------------
+    Total:                3 396
 
-shb_l.a: [6]
-    clock.o                     10
-    dwrite.o                    30
-    exit.o                      20
-    iarttio.o                  108
-    iarwrite.o                  34
-    iarwstd.o                   32
-    write.o                     16
-    ------------------------------------------------
-    Total:                     250
+rt7M_tl.a: [4]
+    ABImemcpy.o             166
+    ABImemset.o             102
+    I64DivMod.o             560
+    I64DivZer.o               2
+    U64Shr.o                 30
+    cexit.o                  10
+    cmain.o                  30
+    copy_init3.o             44
+    data_init.o              40
+    memchr.o                 88
+    strchr.o                 22
+    strlen.o                 54
+    zero_init3.o             58
+    ---------------------------------------------
+    Total:                1 206
 
-    Gaps                        28        8
-    Linker created                       36    4 096
-----------------------------------------------------
-    Grand Total:            16 312    2 484   35 042
+shb_l.a: [5]
+    clock.o                  10
+    dwrite.o                 30
+    exit.o                   20
+    iarttio.o               128
+    iarwrite.o               34
+    iarwstd.o                32
+    write.o                  16
+    ---------------------------------------------
+    Total:                  270
+
+    Gaps                     36        4
+    Linker created                    36    4 096
+-------------------------------------------------
+    Grand Total:         15 852    2 348   35 047
 
 
 *******************************************************************************
 *** ENTRY LIST
 ***
 
-Entry                      Address    Size  Type      Object
------                      -------    ----  ----      ------
-.iar.init_table$$Base   0x200747d4           --   Gb  - Linker created -
-.iar.init_table$$Limit  0x200747f8           --   Gb  - Linker created -
-.intvec$$Base           0x20070000           --   Gb  - Linker created -
-.intvec$$Limit          0x200700f4           --   Gb  - Linker created -
-?main                   0x200746d5          Code  Gb  cmain.o [5]
-ADC_Handler             0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-BusFault_Handler        0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-CAN0_Handler            0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-CAN1_Handler            0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-CSTACK$$Base            0x200748d0           --   Gb  - Linker created -
-CSTACK$$Limit           0x200758d0           --   Gb  - Linker created -
-DACC_Handler            0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-DMAC_Handler            0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-DebugMon_Handler        0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-Dummy_Handler           0x20071fb7     0x2  Code  Gb  exceptions.o [1]
-EFC0_Handler            0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-EFC1_Handler            0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-HSMCI_Handler           0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-HardFault_Handler       0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-LoadInt                 0x2007302b    0x6e  Code  Lc  xprintffull.o [3]
-MemManage_Handler       0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-NMI_Handler             0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-NVIC_ClearPendingIRQ    0x2007010b    0x16  Code  Lc  main.o [1]
-NVIC_EnableIRQ          0x200700f5    0x16  Code  Lc  main.o [1]
-NVIC_SetPriority        0x20070121    0x26  Code  Lc  main.o [1]
-PIOA_Handler            0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-PIOB_Handler            0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-PIOC_Handler            0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-PIOD_Handler            0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-PMC_Handler             0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-PWM_Handler             0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-PendSV_Handler          0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-RSTC_Handler            0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-RTC_Handler             0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-RTT_Handler             0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-Region$$Table$$Base     0x200747d4           --   Gb  - Linker created -
-Region$$Table$$Limit    0x200747f8           --   Gb  - Linker created -
-Reset_Handler           0x200746c1     0x8  Code  Gb  startup_sam3x.o [1]
-SPI0_Handler            0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-SSC_Handler             0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-SUPC_Handler            0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-SVC_Handler             0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-SysTick_Config          0x20070147    0x36  Code  Lc  main.o [1]
-SysTick_Handler         0x2007058f    0x2c  Code  Gb  main.o [1]
-SystemCoreClock         0x20075968     0x4  Data  Gb  system_sam3x.o [1]
-SystemInit              0x2007284d    0x86  Code  Gb  system_sam3x.o [1]
-TC0_Handler             0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-TC1_Handler             0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-TC2_Handler             0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-TC3_Handler             0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-TC4_Handler             0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-TC5_Handler             0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-TRNG_Handler            0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-TWI0_Handler            0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-TWI1_Handler            0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-UART_Handler            0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-UOTGHS_Handler          0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-USART0_Handler          0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-USART1_Handler          0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-USART2_Handler          0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-UsageFault_Handler      0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-WDT_Handler             0x20071fb7     0x2  Code  Wk  exceptions.o [1]
-_GenldFull              0x200735a5   0x26a  Code  Lc  xprintffull.o [3]
-_LdtobFull              0x200731a5   0x3fa  Code  Lc  xprintffull.o [3]
-_LitobFull              0x20073099   0x10a  Code  Lc  xprintffull.o [3]
-_PrintfFull             0x20072a85   0x5a0  Code  Gb  xprintffull.o [3]
-_Prout                  0x200747f9    0x16  Code  Gb  xprout.o [3]
-_PutcharsFull           0x2007380f    0x2e  Code  Lc  xprintffull.o [3]
-_Rand_idx               0x200758d8     0x4  Data  Lc  rand.o [3]
-_Rand_rv                0x200758dc    0x80  Data  Lc  rand.o [3]
-_Randinit               0x200758d0     0x1  Data  Gb  rand.o [3]
-_Randseed               0x200758d4     0x4  Data  Gb  rand.o [3]
-_SProut                 0x20071ec7     0xa  Code  Gb  xsprout.o [3]
-__aeabi_cdcmple         0x20073a75          Code  Gb  DblCmpLe.o [4]
-__aeabi_cdrcmple        0x20073aa5          Code  Gb  DblCmpGe.o [4]
-__aeabi_cfcmple         0x20072829          Code  Gb  FltCmpLe.o [4]
-__aeabi_cfrcmple        0x20072115          Code  Gb  FltCmpGe.o [4]
-__aeabi_d2iz            0x20072585          Code  Gb  DblToI32.o [4]
-__aeabi_d2uiz           0x200725b1          Code  Gb  DblToI32.o [4]
-__aeabi_dadd            0x200722f9          Code  Gb  DblAdd.o [4]
-__aeabi_ddiv            0x20073c11          Code  Gb  DblDiv.o [4]
-__aeabi_dmul            0x200723e1          Code  Gb  DblMul.o [4]
-__aeabi_dsub            0x20072905          Code  Gb  DblSub.o [4]
-__aeabi_f2d             0x200722a9          Code  Gb  FltToDbl.o [4]
-__aeabi_f2iz            0x20072139          Code  Gb  FltToS32.o [4]
-__aeabi_fadd            0x20072091          Code  Gb  FltAdd.o [4]
-__aeabi_fdiv            0x200721ad          Code  Gb  FltDiv.o [4]
-__aeabi_fmul            0x20071fb9          Code  Gb  FltMul.o [4]
-__aeabi_fsub            0x20071ed1          Code  Gb  FltSub.o [4]
-__aeabi_i2d             0x20073be1          Code  Gb  I32ToDbl.o [4]
-__aeabi_i2f             0x2007217d          Code  Gb  I32ToFlt.o [4]
-__aeabi_ldiv0           0x20073e75          Code  Gb  I64DivZer.o [5]
-__aeabi_llsr            0x20072645          Code  Gb  U64Shr.o [5]
-__aeabi_memset          0x200725dd          Code  Gb  ABImemset.o [5]
-__aeabi_ui2d            0x20073bf5          Code  Gb  I32ToDbl.o [4]
-__aeabi_uldivmod        0x200738c9          Code  Gb  I64DivMod.o [5]
-__cfb                   0x2007d244     0x4  Data  Gb  main.o [1]
-__cmain                 0x200746d5          Code  Gb  cmain.o [5]
-__current_temp          0x2007d240     0x4  Data  Lc  main.o [1]
+Entry                       Address    Size  Type      Object
+-----                       -------    ----  ----      ------
+.iar.init_table$$Base   0x2007'4598           --   Gb  - Linker created -
+.iar.init_table$$Limit  0x2007'45bc           --   Gb  - Linker created -
+.intvec$$Base           0x2007'0000           --   Gb  - Linker created -
+.intvec$$Limit          0x2007'00f4           --   Gb  - Linker created -
+?main                   0x2007'44f5          Code  Gb  cmain.o [4]
+ADC_Handler             0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+BusFault_Handler        0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+CAN0_Handler            0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+CAN1_Handler            0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+CSTACK$$Base            0x2007'c000           --   Gb  - Linker created -
+CSTACK$$Limit           0x2007'd000           --   Gb  - Linker created -
+DACC_Handler            0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+DMAC_Handler            0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+DebugMon_Handler        0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+Dummy_Handler           0x2007'1dab     0x2  Code  Gb  exceptions.o [1]
+EFC0_Handler            0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+EFC1_Handler            0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+HSMCI_Handler           0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+HardFault_Handler       0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+LoadInt                 0x2007'27e7    0x7a  Code  Lc  xprintffull_nomb.o [2]
+MemManage_Handler       0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+NMI_Handler             0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+NVIC_ClearPendingIRQ    0x2007'010b    0x16  Code  Lc  main.o [1]
+NVIC_EnableIRQ          0x2007'00f5    0x16  Code  Lc  main.o [1]
+NVIC_SetPriority        0x2007'0121    0x28  Code  Lc  main.o [1]
+PIOA_Handler            0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+PIOB_Handler            0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+PIOC_Handler            0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+PIOD_Handler            0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+PMC_Handler             0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+PWM_Handler             0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+PendSV_Handler          0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+RSTC_Handler            0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+RTC_Handler             0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+RTT_Handler             0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+Region$$Table$$Base     0x2007'4598           --   Gb  - Linker created -
+Region$$Table$$Limit    0x2007'45bc           --   Gb  - Linker created -
+Reset_Handler           0x2007'44e1     0x8  Code  Gb  startup_sam3x.o [1]
+SPI0_Handler            0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+SSC_Handler             0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+SUPC_Handler            0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+SVC_Handler             0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+SysTick_Config          0x2007'0149    0x36  Code  Lc  main.o [1]
+SysTick_Handler         0x2007'0553    0x28  Code  Gb  main.o [1]
+SystemCoreClock         0x2007'4714     0x4  Data  Gb  system_sam3x.o [1]
+SystemInit              0x2007'24b5    0x70  Code  Gb  system_sam3x.o [1]
+TC0_Handler             0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+TC1_Handler             0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+TC2_Handler             0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+TC3_Handler             0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+TC4_Handler             0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+TC5_Handler             0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+TRNG_Handler            0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+TWI0_Handler            0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+TWI1_Handler            0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+UART_Handler            0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+UOTGHS_Handler          0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+USART0_Handler          0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+USART1_Handler          0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+USART2_Handler          0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+UsageFault_Handler      0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+WDT_Handler             0x2007'1dab     0x2  Code  Wk  exceptions.o [1]
+_GenldFullNoMb          0x2007'315d   0x274  Code  Lc  xprintffull_nomb.o [2]
+_LdtobFullNoMb          0x2007'2d31   0x400  Code  Lc  xprintffull_nomb.o [2]
+_LitobFullNoMb          0x2007'2bd9   0x112  Code  Lc  xprintffull_nomb.o [2]
+_PrintfFullNoMb         0x2007'2639   0x19e  Code  Gb  xprintffull_nomb.o [2]
+_Prout                  0x2007'462b    0x16  Code  Gb  xprout.o [2]
+_PutcharsFullNoMb       0x2007'33d1    0x2e  Code  Lc  xprintffull_nomb.o [2]
+_PutfldFullNoMb         0x2007'2861   0x26c  Code  Lc  xprintffull_nomb.o [2]
+_PuttxtFullNoMb         0x2007'2acd   0x10c  Code  Lc  xprintffull_nomb.o [2]
+_Rand_idx               0x2007'bfc0     0x4  Data  Lc  rand.o [2]
+_Rand_rv                0x2007'bf40    0x80  Data  Lc  rand.o [2]
+_Randinit               0x2007'4700     0x1  Data  Gb  rand.o [2]
+_Randseed               0x2007'4704     0x4  Data  Gb  rand.o [2]
+_SProut                 0x2007'1d53     0xa  Code  Gb  xsprout.o [2]
+__aeabi_cdcmple         0x2007'3859          Code  Gb  DblCmpLe.o [3]
+__aeabi_cdrcmple        0x2007'3889          Code  Gb  DblCmpGe.o [3]
+__aeabi_cfcmple         0x2007'2491          Code  Gb  FltCmpLe.o [3]
+__aeabi_cfrcmple        0x2007'1d5d          Code  Gb  FltCmpGe.o [3]
+__aeabi_d2iz            0x2007'2235          Code  Gb  DblToS32.o [3]
+__aeabi_d2uiz           0x2007'3c61          Code  Gb  DblToU32.o [3]
+__aeabi_dadd            0x2007'1f15          Code  Gb  DblAdd.o [3]
+__aeabi_ddiv            0x2007'3a19          Code  Gb  DblDiv.o [3]
+__aeabi_dmul            0x2007'2091          Code  Gb  DblMul.o [3]
+__aeabi_dsub            0x2007'2555          Code  Gb  DblSub.o [3]
+__aeabi_f2d             0x2007'1ecd          Code  Gb  FltToDbl.o [3]
+__aeabi_f2iz            0x2007'1d81          Code  Gb  FltToS32.o [3]
+__aeabi_fadd            0x2007'1c71          Code  Gb  FltAdd.o [3]
+__aeabi_fdiv            0x2007'1dd1          Code  Gb  FltDiv.o [3]
+__aeabi_fmul            0x2007'1b99          Code  Gb  FltMul.o [3]
+__aeabi_fsub            0x2007'1b19          Code  Gb  FltSub.o [3]
+__aeabi_i2d             0x2007'39f5          Code  Gb  S32ToDbl.o [3]
+__aeabi_i2f             0x2007'1dad          Code  Gb  S32ToFlt.o [3]
+__aeabi_ldiv0           0x2007'3ca9          Code  Gb  I64DivZer.o [4]
+__aeabi_llsr            0x2007'22d9          Code  Gb  U64Shr.o [4]
+__aeabi_memcpy          0x2007'3741          Code  Gb  ABImemcpy.o [4]
+__aeabi_memcpy4         0x2007'3761          Code  Gb  ABImemcpy.o [4]
+__aeabi_memcpy8         0x2007'3761          Code  Gb  ABImemcpy.o [4]
+__aeabi_memset          0x2007'2271          Code  Gb  ABImemset.o [4]
+__aeabi_ui2d            0x2007'3c89          Code  Gb  U32ToDbl.o [3]
+__aeabi_uldivmod        0x2007'3511          Code  Gb  I64DivMod.o [4]
+__cfb                   0x2007'bff0     0x4  Data  Gb  main.o [1]
+__cmain                 0x2007'44f5          Code  Gb  cmain.o [4]
+__current_temp          0x2007'bfec     0x4  Data  Lc  main.o [1]
 __current_temp_compressed
-                        0x2007d24c     0x2  Data  Lc  main.o [1]
-__dwrite                0x20074775    0x1e  Code  Gb  dwrite.o [6]
-__exit                  0x20074729    0x14  Code  Gb  exit.o [6]
-__framebuffer           0x2007a8cc  0x1e00  Data  Gb  main.o [1]
-__iar_Dnorm             0x20073a2f    0x44  Code  Gb  xdnorm.o [4]
-__iar_Dscale            0x20073ad5   0x10c  Code  Gb  xdscale.o [4]
-__iar_Memchr            0x20073871          Code  Gb  memchr.o [5]
-__iar_Memset            0x200725dd          Code  Gb  ABImemset.o [5]
-__iar_Memset_word       0x200725e5          Code  Gb  ABImemset.o [5]
-__iar_Strchr            0x20073859          Code  Gb  strchr.o [5]
-__iar_close_ttio        0x20074569    0x2e  Code  Gb  iarttio.o [6]
-__iar_copy_init3        0x20073e77    0x2c  Code  Gb  copy_init3.o [5]
-__iar_d2uiz             0x200725bd          Code  Gb  DblToI32.o [4]
-__iar_dadd              0x2007230d          Code  Gb  DblAdd.o [4]
-__iar_data_init3        0x200746f1    0x28  Code  Gb  data_init.o [5]
-__iar_dlib_perthread_access
-                        0x20073857     0x2  Code  Gb  xtls.o [3]
-__iar_dsub              0x20072919          Code  Gb  DblSub.o [4]
-__iar_dsubStart         0x2007292b          Code  Gb  DblSub.o [4]
-__iar_fadd              0x200720a1          Code  Gb  FltAdd.o [4]
-__iar_fsub              0x20071ee1          Code  Gb  FltSub.o [4]
-__iar_fsubStart         0x20071ef1          Code  Gb  FltSub.o [4]
-__iar_get_ttio          0x20074599    0x38  Code  Gb  iarttio.o [6]
-__iar_lookup_ttioh      0x200745d5     0x8  Code  Gb  XShttio.o [3]
-__iar_program_start     0x200746c9          Code  Gb  cstartup.o [1]
-__iar_sh_stdout         0x20074793    0x20  Code  Gb  iarwstd.o [6]
-__iar_sh_write          0x200747b3    0x22  Code  Gb  iarwrite.o [6]
-__iar_ttio_handles      0x2007595c     0x8  Data  Lc  XShttio.o [3]
-__iar_ui2d              0x20073bf9          Code  Gb  I32ToDbl.o [4]
-__iar_ui2f              0x20072191          Code  Gb  I32ToFlt.o [4]
-__iar_unaligned___aeabi_memcpy
-                        0x200739b9          Code  Gb  ABImemcpy_unaligned.o [5]
-__iar_unaligned___aeabi_memcpy4
-                        0x200739d9          Code  Gb  ABImemcpy_unaligned.o [5]
-__iar_unaligned___aeabi_memcpy8
-                        0x200739d9          Code  Gb  ABImemcpy_unaligned.o [5]
-__iar_zero_init3        0x2007461d    0x40  Code  Gb  zero_init3.o [5]
-__low_level_init        0x20074695    0x24  Code  Gb  startup_sam3x.o [1]
-__readRow               0x2007061f     0xc  Code  Lc  main.o [1]
-__setColunm             0x2007062b    0x1a  Code  Lc  main.o [1]
-__set_current_temp      0x20070a5b    0x2e  Code  Lc  main.o [1]
-__systick_counter       0x2007d23c     0x4  Data  Gb  main.o [1]
-__temp_start_time       0x20075964     0x4  Data  Lc  main.o [1]
-__vector_table          0x20070000    0xf4  Data  Gb  startup_sam3x.o [1]
-__write                 0x20074765    0x10  Code  Gb  write.o [6]
-_call_main              0x200746e1          Code  Gb  cmain.o [5]
-_exit                   0x2007471d          Code  Gb  cexit.o [5]
-_main                   0x200746eb          Code  Gb  cmain.o [5]
-bitascii                0x20073ea8   0x400  Data  Lc  main.o [1]
-cfloor                  0x200701ff    0x22  Code  Lc  main.o [1]
-clearLog                0x200718f1     0xa  Code  Lc  main.o [1]
-clock                   0x200727b1     0xa  Code  Gb  clock.o [6]
-delay                   0x200705d9     0xe  Code  Lc  main.o [1]
-display_clear           0x200708f3     0xc  Code  Lc  main.o [1]
-display_pixel_clear     0x200708bf    0x34  Code  Lc  main.o [1]
-display_read_status     0x200706bd    0x78  Code  Lc  main.o [1]
-display_set_cursor      0x2007084d    0x22  Code  Lc  main.o [1]
+                        0x2007'bffc     0x2  Data  Lc  main.o [1]
+__dwrite                0x2007'45ed    0x1e  Code  Gb  dwrite.o [5]
+__exit                  0x2007'3cad    0x14  Code  Gb  exit.o [5]
+__framebuffer           0x2007'95f4  0x1e00  Data  Gb  main.o [1]
+__iar_Fail_s            0x2007'3479    0x1c  Code  Gb  xfail_s.o [2]
+__iar_Memchr            0x2007'34b9          Code  Gb  memchr.o [4]
+__iar_Memset            0x2007'2271          Code  Gb  ABImemset.o [4]
+__iar_Memset_word       0x2007'2279          Code  Gb  ABImemset.o [4]
+__iar_Strchr            0x2007'3461          Code  Gb  strchr.o [4]
+__iar_close_ttio        0x2007'3cc1    0x2e  Code  Gb  iarttio.o [5]
+__iar_copy_init3        0x2007'454b    0x2c  Code  Gb  copy_init3.o [4]
+__iar_dadd              0x2007'2565          Code  Gb  DblSub.o [3]
+__iar_data_init3        0x2007'4515    0x28  Code  Gb  data_init.o [4]
+__iar_dsub              0x2007'1f25          Code  Gb  DblAdd.o [3]
+__iar_dsubStart         0x2007'1f37          Code  Gb  DblAdd.o [3]
+__iar_fadd              0x2007'1b25          Code  Gb  FltSub.o [3]
+__iar_fmax32            0x2007'2445          Code  Gb  fmaxf.o [3]
+__iar_fmin32            0x2007'2421          Code  Gb  fminf.o [3]
+__iar_frexp             0x2007'37f5          Code  Gb  frexp.o [3]
+__iar_frexp64           0x2007'37e9          Code  Gb  frexp.o [3]
+__iar_frexpl            0x2007'37f5          Code  Gb  frexp.o [3]
+__iar_fsub              0x2007'1c7d          Code  Gb  FltAdd.o [3]
+__iar_fsubStart         0x2007'1c8d          Code  Gb  FltAdd.o [3]
+__iar_get_ttio          0x2007'3cf1    0x4c  Code  Gb  iarttio.o [5]
+__iar_ldexp64           0x2007'38b9          Code  Gb  ldexp.o [3]
+__iar_lookup_ttioh      0x2007'3d6f     0x4  Code  Gb  XShttio.o [2]
+__iar_program_start     0x2007'44e9          Code  Gb  cstartup.o [1]
+__iar_scalbln64         0x2007'38b9          Code  Gb  ldexp.o [3]
+__iar_scalbn64          0x2007'38b9          Code  Gb  ldexp.o [3]
+__iar_sh_stdout         0x2007'460b    0x20  Code  Gb  iarwstd.o [5]
+__iar_sh_write          0x2007'4577    0x22  Code  Gb  iarwrite.o [5]
+__iar_ttio_guard_lock   0x2007'3d41    0x1e  Code  Gb  XShttio.o [2]
+__iar_ttio_guard_unlock
+                        0x2007'3d5f    0x10  Code  Gb  XShttio.o [2]
+__iar_ttio_handles      0x2007'4708     0x8  Data  Lc  XShttio.o [2]
+__iar_zero_init3        0x2007'1adf    0x3a  Code  Gb  zero_init3.o [4]
+__low_level_init        0x2007'44b9    0x20  Code  Gb  startup_sam3x.o [1]
+__readRow               0x2007'05db     0xc  Code  Lc  main.o [1]
+__setColunm             0x2007'05e7    0x1a  Code  Lc  main.o [1]
+__set_current_temp      0x2007'0995    0x2e  Code  Lc  main.o [1]
+__systick_counter       0x2007'bfe8     0x4  Data  Gb  main.o [1]
+__temp_start_time       0x2007'4710     0x4  Data  Lc  main.o [1]
+__vector_table          0x2007'0000    0xf4  Data  Gb  startup_sam3x.o [1]
+__write                 0x2007'45dd    0x10  Code  Gb  write.o [5]
+_call_main              0x2007'4501          Code  Gb  cmain.o [4]
+_exit                   0x2007'4541          Code  Gb  cexit.o [4]
+_main                   0x2007'450f          Code  Gb  cmain.o [4]
+abort                   0x2007'3ca3     0x6  Code  Gb  abort.o [2]
+bitascii                0x2007'3d80   0x400  Data  Lc  main.o [1]
+cfloor                  0x2007'01f5    0x22  Code  Lc  main.o [1]
+clearLog                0x2007'14cb     0xa  Code  Lc  main.o [1]
+clock                   0x2007'2415     0xa  Code  Gb  clock.o [5]
+delay                   0x2007'0599     0xe  Code  Lc  main.o [1]
+display_clear           0x2007'083d     0xc  Code  Lc  main.o [1]
+display_pixel_clear     0x2007'0809    0x34  Code  Lc  main.o [1]
+display_read_status     0x2007'0675    0x58  Code  Lc  main.o [1]
+display_set_cursor      0x2007'078d    0x26  Code  Lc  main.o [1]
 display_set_pixel_cursor
-                        0x2007086f    0x24  Code  Lc  main.o [1]
-display_text_clear      0x20070893    0x2c  Code  Lc  main.o [1]
-display_write_command   0x20070735    0x8c  Code  Lc  main.o [1]
-display_write_data      0x200707c1    0x8c  Code  Lc  main.o [1]
-div                     0x20073e67     0xe  Code  Gb  div.o [3]
-elapsedTime             0x2007135b     0xe  Code  Lc  main.o [1]
-exit                    0x20074719     0x4  Code  Gb  exit.o [3]
-fmaxf                   0x200727e1          Code  Gb  fmaxf.o [4]
-fminf                   0x200727bd          Code  Gb  fminf.o [4]
-framebufferClear        0x20070f4d    0x38  Code  Lc  main.o [1]
-framebufferClearSnake   0x20070ce5   0x10e  Code  Lc  main.o [1]
-framebufferDisplay      0x20070ff1    0xbc  Code  Lc  main.o [1]
+                        0x2007'07b3    0x28  Code  Lc  main.o [1]
+display_text_clear      0x2007'07db    0x2e  Code  Lc  main.o [1]
+display_write_command   0x2007'06cd    0x60  Code  Lc  main.o [1]
+display_write_data      0x2007'072d    0x60  Code  Lc  main.o [1]
+elapsedTime             0x2007'1125     0xe  Code  Lc  main.o [1]
+exit                    0x2007'453d     0x4  Code  Gb  exit.o [2]
+fmaxf                   0x2007'2445          Code  Gb  fmaxf.o [3]
+fminf                   0x2007'2421          Code  Gb  fminf.o [3]
+framebufferClear        0x2007'0d27    0x3a  Code  Lc  main.o [1]
+framebufferClearSnake   0x2007'0ba3    0xae  Code  Lc  main.o [1]
+framebufferDisplay      0x2007'0dc1    0xa0  Code  Lc  main.o [1]
 framebufferDisplayNoSwap
-                        0x20070f99    0x4c  Code  Lc  main.o [1]
-framebufferDrawApple    0x20070e05   0x10e  Code  Lc  main.o [1]
-framebufferDrawRect     0x20070f21    0x2c  Code  Lc  main.o [1]
-framebufferDrawSnake    0x20070bd3   0x10e  Code  Lc  main.o [1]
-framebufferSetPixel     0x20070b77    0x5c  Code  Lc  main.o [1]
-initDisplay             0x200708ff    0x92  Code  Gb  main.o [1]
-initKeypad              0x200705e7    0x38  Code  Lc  main.o [1]
-initLightSensor         0x20070b53    0x24  Code  Lc  main.o [1]
-initServo               0x20070b09    0x4a  Code  Lc  main.o [1]
-initSnakeState          0x200712e5    0x76  Code  Lc  main.o [1]
-initSystick             0x200705bb    0x14  Code  Lc  main.o [1]
-initTemp                0x20070991    0x5a  Code  Lc  main.o [1]
-isLogging               0x2007d238     0x4  Data  Gb  main.o [1]
-keypadRead              0x20070645    0x78  Code  Lc  main.o [1]
-loggCurrentTemp         0x200717f9    0x3a  Code  Lc  main.o [1]
-loggCurrentTemp::last   0x2007d248     0x4  Data  Lc  main.o [1]
-main                    0x20071e9d    0x2a  Code  Gb  main.o [1]
-mainMenu                0x20071ca1   0x168  Code  Lc  main.o [1]
-memchr                  0x20073871          Code  Gb  memchr.o [5]
-menu                    0x2007465c    0x38  Data  Lc  main.o [1]
-menuSize                0x200748cc     0x4  Data  Lc  main.o [1]
-perlinNoise             0x20070221   0x36e  Code  Lc  main.o [1]
-perlinNoise::x_wrap     0x200748c0     0x4  Data  Lc  main.o [1]
-perlinNoise::y_wrap     0x200748c4     0x4  Data  Lc  main.o [1]
-perlinNoise::z_wrap     0x200748c8     0x4  Data  Lc  main.o [1]
-printf                  0x20072805    0x24  Code  Gb  printf.o [3]
-putchar                 0x2007473d    0x28  Code  Gb  putchar.o [3]
-rand                    0x200726d1    0xe0  Code  Gb  rand.o [3]
-randomTempArray         0x20071885    0x4a  Code  Lc  main.o [1]
-renderAscii             0x200710ad    0xe6  Code  Lc  main.o [1]
-renderR32               0x200711eb    0x32  Code  Lc  main.o [1]
-renderR32::buffer       0x2007d218    0x20  Data  Lc  main.o [1]
-renderString            0x20071199    0x52  Code  Lc  main.o [1]
-renderStringBox         0x2007126d    0x78  Code  Lc  main.o [1]
-resetTimer              0x20071369     0xc  Code  Lc  main.o [1]
-runSnakeGame            0x20071375   0x472  Code  Gb  main.o [1]
-runSnakeGame::snake     0x2007c6cc   0xb4c  Data  Lc  main.o [1]
-servoTurn               0x20070acf    0x3a  Code  Gb  main.o [1]
-showTempGraph           0x20071bd1    0xb8  Code  Lc  main.o [1]
-showTempSum             0x20071931   0x2a0  Code  Lc  main.o [1]
-sprintf                 0x20072665    0x34  Code  Gb  sprintf.o [3]
-startLogging            0x200718d5     0xa  Code  Lc  main.o [1]
-stb__perlin_grad        0x20070199    0x66  Code  Lc  main.o [1]
+                        0x2007'0d69    0x4e  Code  Lc  main.o [1]
+framebufferDrawApple    0x2007'0c51    0xaa  Code  Lc  main.o [1]
+framebufferDrawRect     0x2007'0cfb    0x2c  Code  Lc  main.o [1]
+framebufferDrawSnake    0x2007'0af5    0xae  Code  Lc  main.o [1]
+framebufferSetPixel     0x2007'0aa1    0x54  Code  Lc  main.o [1]
+frexp                   0x2007'37e9          Code  Gb  frexp.o [3]
+frexpl                  0x2007'37e9          Code  Gb  frexp.o [3]
+initDisplay             0x2007'0849    0x8e  Code  Gb  main.o [1]
+initKeypad              0x2007'05a7    0x34  Code  Lc  main.o [1]
+initLightSensor         0x2007'0a81    0x20  Code  Lc  main.o [1]
+initServo               0x2007'0a3b    0x46  Code  Lc  main.o [1]
+initSnakeState          0x2007'10ad    0x78  Code  Lc  main.o [1]
+initSystick             0x2007'057b    0x14  Code  Lc  main.o [1]
+initTemp                0x2007'08d7    0x56  Code  Lc  main.o [1]
+isLogging               0x2007'bfe4     0x4  Data  Gb  main.o [1]
+keypadRead              0x2007'0601    0x74  Code  Lc  main.o [1]
+ldexp                   0x2007'38b9          Code  Gb  ldexp.o [3]
+ldexpl                  0x2007'38b9          Code  Gb  ldexp.o [3]
+loggCurrentTemp         0x2007'1415    0x2e  Code  Lc  main.o [1]
+loggCurrentTemp::last   0x2007'bff4     0x4  Data  Lc  main.o [1]
+main                    0x2007'1ab5    0x2a  Code  Gb  main.o [1]
+mainMenu                0x2007'18bd   0x166  Code  Lc  main.o [1]
+memchr                  0x2007'34b9          Code  Gb  memchr.o [4]
+menu                    0x2007'4480    0x38  Data  Lc  main.o [1]
+menuSize                0x2007'46fc     0x4  Data  Lc  main.o [1]
+perlinNoise             0x2007'0217   0x33c  Code  Lc  main.o [1]
+perlinNoise::x_wrap     0x2007'46f0     0x4  Data  Lc  main.o [1]
+perlinNoise::y_wrap     0x2007'46f4     0x4  Data  Lc  main.o [1]
+perlinNoise::z_wrap     0x2007'46f8     0x4  Data  Lc  main.o [1]
+printf                  0x2007'2469    0x28  Code  Gb  printf.o [2]
+putchar                 0x2007'45bd    0x20  Code  Gb  putchar.o [2]
+rand                    0x2007'2371    0x94  Code  Gb  rand.o [2]
+randomTempArray         0x2007'147d    0x3a  Code  Lc  main.o [1]
+renderAscii             0x2007'0e85    0xe6  Code  Lc  main.o [1]
+renderR32               0x2007'0fbf    0x34  Code  Lc  main.o [1]
+renderR32::buffer       0x2007'bfc4    0x20  Data  Lc  main.o [1]
+renderString            0x2007'0f79    0x46  Code  Lc  main.o [1]
+renderStringBox         0x2007'1031    0x7c  Code  Lc  main.o [1]
+resetTimer              0x2007'1133     0xc  Code  Lc  main.o [1]
+runSnakeGame            0x2007'113f   0x2d6  Code  Gb  main.o [1]
+runSnakeGame::snake     0x2007'b3f4   0xb4c  Data  Lc  main.o [1]
+scalbln                 0x2007'38b9          Code  Gb  ldexp.o [3]
+scalblnl                0x2007'38b9          Code  Gb  ldexp.o [3]
+scalbn                  0x2007'38b9          Code  Gb  ldexp.o [3]
+scalbnl                 0x2007'38b9          Code  Gb  ldexp.o [3]
+scale                   0x2007'2ceb    0x46  Code  Lc  xprintffull_nomb.o [2]
+sec_hand                0x2007'bff8     0x4  Data  Lc  xfail_s.o [2]
+servoTurn               0x2007'0a01    0x3a  Code  Gb  main.o [1]
+showTempGraph           0x2007'17e1    0xba  Code  Lc  main.o [1]
+showTempSum             0x2007'153d   0x294  Code  Lc  main.o [1]
+sprintf                 0x2007'22f9    0x40  Code  Gb  sprintf.o [2]
+startLogging            0x2007'14b7     0xa  Code  Lc  main.o [1]
+stb__perlin_grad        0x2007'019b    0x5a  Code  Lc  main.o [1]
 stb__perlin_grad::basis
-                        0x200744a8    0xc0  Data  Lc  main.o [1]
+                        0x2007'4380    0xc0  Data  Lc  main.o [1]
 stb__perlin_grad::indices
-                        0x200745dc    0x40  Data  Lc  main.o [1]
-stb__perlin_lerp        0x2007017d    0x1c  Code  Lc  main.o [1]
-stb__perlin_randtab     0x200742a8   0x200  Data  Lc  main.o [1]
-stopLogging             0x200718df     0xa  Code  Lc  main.o [1]
-strchr                  0x20073859          Code  Gb  strchr.o [5]
-strlen                  0x20072699          Code  Gb  strlen.o [5]
-systickGetTime          0x200705cf     0x8  Code  Lc  main.o [1]
-tempConvert             0x20070a35    0x18  Code  Lc  main.o [1]
-tempDecompress          0x20070a4d     0xe  Code  Lc  main.o [1]
-tempGetCompressed       0x20070abf     0x8  Code  Lc  main.o [1]
-tempGetCurrent          0x20070ac7     0x8  Code  Lc  main.o [1]
-tempNoise               0x20071839    0x3a  Code  Lc  main.o [1]
-tempReady               0x20070a89    0x36  Code  Lc  main.o [1]
-tempStartMesurment      0x200709eb    0x4a  Code  Lc  main.o [1]
-temp_array              0x20075a08  0x4ec4  Data  Lc  main.o [1]
+                        0x2007'4440    0x40  Data  Lc  main.o [1]
+stb__perlin_lerp        0x2007'017f    0x1c  Code  Lc  main.o [1]
+stb__perlin_randtab     0x2007'4180   0x200  Data  Lc  main.o [1]
+stopLogging             0x2007'14c1     0xa  Code  Lc  main.o [1]
+strchr                  0x2007'3461          Code  Gb  strchr.o [4]
+strlen                  0x2007'2339          Code  Gb  strlen.o [4]
+systickGetTime          0x2007'058f     0x8  Code  Lc  main.o [1]
+tempConvert             0x2007'096f    0x18  Code  Lc  main.o [1]
+tempDecompress          0x2007'0987     0xe  Code  Lc  main.o [1]
+tempGetCompressed       0x2007'09f1     0x8  Code  Lc  main.o [1]
+tempGetCurrent          0x2007'09f9     0x8  Code  Lc  main.o [1]
+tempNoise               0x2007'1443    0x3a  Code  Lc  main.o [1]
+tempReady               0x2007'09c3    0x2e  Code  Lc  main.o [1]
+tempStartMesurment      0x2007'092d    0x42  Code  Lc  main.o [1]
+temp_array              0x2007'4730  0x4ec4  Data  Lc  main.o [1]
+ttio_guard              0x2007'bffe     0x1  Data  Lc  XShttio.o [2]
 
 
-[1] = D:\GitHub2\DS1\Lab 3\Debug\Obj
-[2] = command line
-[3] = dl7M_tln.a
-[4] = m7M_tl.a
-[5] = rt7M_tl.a
-[6] = shb_l.a
+[1] = C:\Users\Anton\Documents\GitHub\DS1\Lab 3\Debug\Obj
+[2] = dl7M_tln.a
+[3] = m7M_tl.a
+[4] = rt7M_tl.a
+[5] = shb_l.a
 
-  16 312 bytes of readonly  code memory
-   2 484 bytes of readonly  data memory
-  35 042 bytes of readwrite data memory
+  15 852 bytes of readonly  code memory
+   2 348 bytes of readonly  data memory
+  35 047 bytes of readwrite data memory
 
 Errors: none
-Warnings: none
+Warnings: 1
