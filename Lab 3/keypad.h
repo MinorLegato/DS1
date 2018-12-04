@@ -38,12 +38,13 @@ static int keypad_read() {
     // make all column pin as output 
     *AT91C_PIOC_OER = KEYBOARD_COL;
 
-    // Loop Column
     for (int32_t n = 0; n < 3; n++) {
         __set_colunm((n + 1) % 3);
         
+        int32_t row = ~__read_row();
+    
         for (int32_t i = 0; i < 4; i++) {
-            if((~__read_row() & (1 << i)) == (1 << i))
+            if((row & (1 << i)) == (1 << i))
                 value = ((i + 1) % 4) * 3 + n + 1; 
         }
     }
