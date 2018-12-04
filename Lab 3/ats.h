@@ -6,27 +6,12 @@
 
 #define STRUCT(NAME) typedef struct NAME NAME; struct NAME
 
-#define FOR_MATRIX(X, Y) for (i32 y = 0; y < Y; y++) for (i32 x = 0; x < X; x++)
-
-typedef int32_t b32;
-
-typedef float   r32;
-typedef double  r64;
-
-typedef uint8_t  u8;
-typedef uint16_t u16;
-typedef uint32_t u32;
-typedef uint64_t u64;
-
-typedef int8_t  i8;
-typedef int16_t i16;
-typedef int32_t i32;
-typedef int64_t i64;
+#define FOR_MATRIX(X, Y) for (int32_t y = 0; y < Y; y++) for (int32_t x = 0; x < X; x++)
 
 #define randi(min, max) (rand() % ((max) - (min)) + (min))
-#define randf(min, max) ((rand() / (r32)RAND_MAX) * fabs((r32)(max) - (r32)(min)) + (r32)(min))
+#define randf(min, max) ((rand() / (float)RAND_MAX) * fabs((float)(max) - (float)(min)) + (float)(min))
 
-#define Array(T, N) struct { i32 size; T data[N]; }
+#define Array(T, N) struct { int32_t size; T data[N]; }
 
 #define array_add(arr, e)     do { (arr)->data[(arr)->size++] = (e); } while (0);
 #define array_rem(arr, i)     do { (arr)->data[(i)] = (arr)->data[--(arr)->size]; } while (0);
@@ -42,143 +27,23 @@ typedef int64_t i64;
 #define TO_DEG(rad) ((rad) * (180.0f / (PI)))
 
 // from Quake 3 Arena
-static inline r32 rsqrt(r32 number) {
-	u32 i;
-	r32 x2, y;
-	const r32 threehalfs = 1.5f;
+static inline float rsqrt(float number) {
+	uint32_t i;
+	float x2, y;
+	const float threehalfs = 1.5f;
 
 	x2 = number * 0.5F;
 	y  = number;
-    i = (union { r32 f; u32 l; }) { y }.l;  // evil floating point bit level hacking
+    i = (union { float f; uint32_t l; }) { y }.l;  // evil floating point bit level hacking
 	i  = 0x5f3759df - (i >> 1);             // what the fuck? 
-    y = (union { u32 l; r32 f; }) { i }.f;
+    y = (union { uint32_t l; float f; }) { i }.f;
 	y  = y * (threehalfs - (x2 * y * y));   // 1st iteration
 
 	return y;
 }
 
-STRUCT(v2) {
-    r32 x;
-    r32 y;
-};
-
-static inline v2 V2(r32 x, r32 y) {
-    v2 v = { x, y }; return v;
-}
-
-static inline v2 v2_add(v2 a, v2 b) {
-    a.x += b.x;
-    a.y += b.y;
-    return a;
-}
-
-static inline v2 v2_sub(v2 a, v2 b) {
-    a.x -= b.x;
-    a.y -= b.y;
-    return a;
-}
-
-static inline v2 v2_mul(v2 a, r32 s) {
-    a.x *= s;
-    a.y *= s;
-    return a;
-}
-
-static inline v2 v2_div(v2 a, r32 s) {
-    a.x /= s;
-    a.y /= s;
-    return a;
-}
-
-static inline r32 v2_len_sq(v2 a) {
-    return a.x * a.x + a.y * a.y;
-}
-
-static inline r32 len(v2 a) {
-    return sqrtf(v2_len_sq(a));
-}
-
-static inline r32 revLen(v2 a) {
-    return rsqrt(v2_len_sq(a));
-}
-
-static inline v2 norm(v2 a) {
-    r32 l = len(a);
-    return V2(a.x / l, a.y / l);
-}
-
-static inline r32 v2_dot(v2 a, v2 b) {
-    return a.x * b.x + a.y * b.y;
-}
-
-static inline r32 v2_det(v2 a, v2 b) {
-    return a.x * b.y - b.x * a.y;
-}
-
-static inline r32 v2_dist(v2 a, v2 b) {
-    v2 c = { a.x - b.x, a.y - b.y };
-    return len(c);
-}
-
-static inline r32 v2_dist_sq(v2 a, v2 b) {
-    v2 c = { a.x - b.x, a.y - b.y };
-    return v2_len_sq(c);
-}
-
-static inline v2 v2_dir(v2 from, v2 to) {
-    v2 dir = { to.x - from.x, to.y - from.y };
-    r32 rlen = revLen(dir);
-    dir.x *= rlen;
-    dir.y *= rlen;
-    return dir;
-}
-
-static inline v2 v2_round(v2 a) {
-    return V2(roundf(a.x), roundf(a.y));
-}
-
-static inline v2 rotate_rad(v2 v, r32 rad) {
-    return V2(
-        v.x * cosf(rad) - v.y * sinf(rad),
-        v.x * sinf(rad) + v.y * cosf(rad));
-}
-
-static inline v2 rotate_deg(v2 v, r32 deg) {
-    r32 rad = TO_RAD(deg);
-    return V2(
-        v.x * cosf(rad) - v.y * sinf(rad),
-        v.x * sinf(rad) + v.y * cosf(rad));
-}
-
-STRUCT(AABB) {
-    v2 c;
-    v2 r;
-};
-
-static inline AABB makeAABB(r32 x, r32 y, r32 w, r32 h) {
-    w = 0.5f * w;
-    h = 0.5f * h;
-    x += w;
-    y += h;
-
-    AABB ret = { { x, y }, { w, h } };
-    return ret;
-}
-
-static inline b32 intersects(AABB a, AABB b) {
-    if (fabs(a.c.x - b.c.x) > (a.r.x + b.r.x)) return 0;
-    if (fabs(a.c.y - b.c.y) > (a.r.y + b.r.y)) return 0;
-    return 1;
-}
-
-static inline b32 contains(AABB a, v2 p) {
-    if ((p.x < a.c.x - a.r.x) || (p.x > a.c.x + a.r.x)) return 0;
-    if ((p.y < a.c.y - a.r.y) || (p.y > a.c.y + a.r.y)) return 0;
-    return 1;
-}
-
 // modified version of stb_perlin.h from nothings stb library
-static const u8 stb__perlin_randtab[512] = {
+static const uint8_t stb__perlin_randtab[512] = {
     23, 125, 161, 52, 103, 117, 70, 37, 247, 101, 203, 169, 124, 126, 44, 123, 
     152, 238, 145, 45, 171, 114, 253, 10, 192, 136, 4, 157, 249, 30, 35, 72, 
     175, 63, 77, 90, 181, 16, 96, 111, 133, 104, 75, 162, 93, 56, 66, 240, 
@@ -215,13 +80,13 @@ static const u8 stb__perlin_randtab[512] = {
     61, 40, 167, 237, 102, 223, 106, 159, 197, 189, 215, 137, 36, 32, 22, 5,  
 };
 
-static inline r32 stb__perlin_lerp(r32 a, r32 b, r32 t) {
+static inline float stb__perlin_lerp(float a, float b, float t) {
     return a + (b - a) * t;
 }
 
 // different grad function from Perlin's, but easy to modify to match reference
-static inline r32 stb__perlin_grad(i32 hash, r32 x, r32 y, r32 z) {
-    static const r32 basis[12][4] = {
+static inline float stb__perlin_grad(int32_t hash, float x, float y, float z) {
+    static const float basis[12][4] = {
         {  1, 1, 0 },
         { -1, 1, 0 },
         {  1,-1, 0 },
@@ -239,7 +104,7 @@ static inline r32 stb__perlin_grad(i32 hash, r32 x, r32 y, r32 z) {
     // perlin's gradient has 12 cases so some get used 1/16th of the time
     // and some 2/16ths. We reduce bias by changing those fractions
     // to 5/16ths and 6/16ths, and the same 4 cases get the extra weight.
-    static const u8 indices[64] = {
+    static const uint8_t indices[64] = {
         0,1,2,3,4,5,6,7,8,9,10,11,
         0,9,1,11,
         0,1,2,3,4,5,6,7,8,9,10,11,
@@ -258,61 +123,61 @@ static inline r32 stb__perlin_grad(i32 hash, r32 x, r32 y, r32 z) {
         basis[indices[hash & 63]][2] * z;
 }
 
-static inline r32 cfloor(r32 n) {
-    return n >= 0? (i32)(n) : (i32)(n - 1.0f);
+static inline float cfloor(float n) {
+    return n >= 0? (int32_t)(n) : (int32_t)(n - 1.0f);
 }
 
-static inline r32 perlinNoise(r32 x, r32 y, r32 z) {
-    static const i32 x_wrap = 0;
-    static const i32 y_wrap = 0;
-    static const i32 z_wrap = 0;
+static inline float perlinNoise(float x, float y, float z) {
+    static const int32_t x_wrap = 0;
+    static const int32_t y_wrap = 0;
+    static const int32_t z_wrap = 0;
     
-    const u32 x_mask = (x_wrap-1) & 255;
-    const u32 y_mask = (y_wrap-1) & 255;
-    const u32 z_mask = (z_wrap-1) & 255;
+    const uint32_t x_mask = (x_wrap-1) & 255;
+    const uint32_t y_mask = (y_wrap-1) & 255;
+    const uint32_t z_mask = (z_wrap-1) & 255;
     
-    const i32 px = (i32)cfloor(x);
-    const i32 py = (i32)cfloor(y);
-    const i32 pz = (i32)cfloor(z);
+    const int32_t px = (int32_t)cfloor(x);
+    const int32_t py = (int32_t)cfloor(y);
+    const int32_t pz = (int32_t)cfloor(z);
     
     x -= px;
     y -= py;
     z -= pz;
     
-    i32 x0 = px & x_mask, x1 = (px+1) & x_mask;
-    i32 y0 = py & y_mask, y1 = (py+1) & y_mask;
-    i32 z0 = pz & z_mask, z1 = (pz+1) & z_mask;
+    int32_t x0 = px & x_mask, x1 = (px+1) & x_mask;
+    int32_t y0 = py & y_mask, y1 = (py+1) & y_mask;
+    int32_t z0 = pz & z_mask, z1 = (pz+1) & z_mask;
     
 #define stb__perlin_ease(a)   (((a*6-15)*a + 10) * a * a * a)
     
-    const r32 u = stb__perlin_ease(x);
-    const r32 v = stb__perlin_ease(y);
-    const r32 w = stb__perlin_ease(z);
+    const float u = stb__perlin_ease(x);
+    const float v = stb__perlin_ease(y);
+    const float w = stb__perlin_ease(z);
     
-    const i32 r0 = stb__perlin_randtab[x0];
-    const i32 r1 = stb__perlin_randtab[x1];
+    const int32_t r0 = stb__perlin_randtab[x0];
+    const int32_t r1 = stb__perlin_randtab[x1];
     
-    const i32 r00 = stb__perlin_randtab[r0+y0];
-    const i32 r01 = stb__perlin_randtab[r0+y1];
-    const i32 r10 = stb__perlin_randtab[r1+y0];
-    const i32 r11 = stb__perlin_randtab[r1+y1];
+    const int32_t r00 = stb__perlin_randtab[r0+y0];
+    const int32_t r01 = stb__perlin_randtab[r0+y1];
+    const int32_t r10 = stb__perlin_randtab[r1+y0];
+    const int32_t r11 = stb__perlin_randtab[r1+y1];
     
-    const r32 n000 = stb__perlin_grad(stb__perlin_randtab[r00+z0], x  , y  , z   );
-    const r32 n001 = stb__perlin_grad(stb__perlin_randtab[r00+z1], x  , y  , z-1 );
-    const r32 n010 = stb__perlin_grad(stb__perlin_randtab[r01+z0], x  , y-1, z   );
-    const r32 n011 = stb__perlin_grad(stb__perlin_randtab[r01+z1], x  , y-1, z-1 );
-    const r32 n100 = stb__perlin_grad(stb__perlin_randtab[r10+z0], x-1, y  , z   );
-    const r32 n101 = stb__perlin_grad(stb__perlin_randtab[r10+z1], x-1, y  , z-1 );
-    const r32 n110 = stb__perlin_grad(stb__perlin_randtab[r11+z0], x-1, y-1, z   );
-    const r32 n111 = stb__perlin_grad(stb__perlin_randtab[r11+z1], x-1, y-1, z-1 );
+    const float n000 = stb__perlin_grad(stb__perlin_randtab[r00+z0], x  , y  , z   );
+    const float n001 = stb__perlin_grad(stb__perlin_randtab[r00+z1], x  , y  , z-1 );
+    const float n010 = stb__perlin_grad(stb__perlin_randtab[r01+z0], x  , y-1, z   );
+    const float n011 = stb__perlin_grad(stb__perlin_randtab[r01+z1], x  , y-1, z-1 );
+    const float n100 = stb__perlin_grad(stb__perlin_randtab[r10+z0], x-1, y  , z   );
+    const float n101 = stb__perlin_grad(stb__perlin_randtab[r10+z1], x-1, y  , z-1 );
+    const float n110 = stb__perlin_grad(stb__perlin_randtab[r11+z0], x-1, y-1, z   );
+    const float n111 = stb__perlin_grad(stb__perlin_randtab[r11+z1], x-1, y-1, z-1 );
     
-    const r32 n00 = stb__perlin_lerp(n000,n001,w);
-    const r32 n01 = stb__perlin_lerp(n010,n011,w);
-    const r32 n10 = stb__perlin_lerp(n100,n101,w);
-    const r32 n11 = stb__perlin_lerp(n110,n111,w);
+    const float n00 = stb__perlin_lerp(n000,n001,w);
+    const float n01 = stb__perlin_lerp(n010,n011,w);
+    const float n10 = stb__perlin_lerp(n100,n101,w);
+    const float n11 = stb__perlin_lerp(n110,n111,w);
     
-    const r32 n0 = stb__perlin_lerp(n00,n01,v);
-    const r32 n1 = stb__perlin_lerp(n10,n11,v);
+    const float n0 = stb__perlin_lerp(n00,n01,v);
+    const float n1 = stb__perlin_lerp(n10,n11,v);
     
     return stb__perlin_lerp(n0,n1,u);
 }

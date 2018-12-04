@@ -5,160 +5,106 @@
     <configuration>
         <name>Debug</name>
         <outputs>
-            <file>$PROJ_DIR$\Debug\Obj\startup_sam3x.o</file>
-            <file>$PROJ_DIR$\system_sam3x.h</file>
-            <file>$PROJ_DIR$\delay.h</file>
-            <file>$PROJ_DIR$\main.c</file>
-            <file>$PROJ_DIR$\system_sam3x.c</file>
+            <file>$PROJ_DIR$\at91sam3x8.h</file>
             <file>$PROJ_DIR$\startup_sam3x.c</file>
+            <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
             <file>$PROJ_DIR$\cstartup.s</file>
-            <file>$PROJ_DIR$\exceptions.c</file>
-            <file>$PROJ_DIR$\Debug\Obj\startup_sam3x.__cstat.et</file>
-            <file>$TOOLKIT_DIR$\inc\c\limits.h</file>
-            <file>$PROJ_DIR$\Debug\Exe\Lab_2.out</file>
-            <file>$TOOLKIT_DIR$\lib\rt7M_tl.a</file>
-            <file>$PROJ_DIR$\bitmaps.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\time.h</file>
-            <file>$PROJ_DIR$\framebuffer.h</file>
-            <file>$TOOLKIT_DIR$\lib\m7M_tl.a</file>
-            <file>$TOOLKIT_DIR$\config\linker\Atmel\sam3x8e\sram.icf</file>
-            <file>$TOOLKIT_DIR$\inc\c\cmsis_iar.h</file>
-            <file>$PROJ_DIR$\keypad.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\string.h</file>
-            <file>$PROJ_DIR$\ats.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\exceptions.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\main.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\system_sam3x.o</file>
             <file>$PROJ_DIR$\core_cmInstr.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\exceptions.pbi</file>
+            <file>$TOOLKIT_DIR$\lib\m7M_tl.a</file>
             <file>$PROJ_DIR$\Debug\Obj\main.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Exe\Lab_1.out</file>
-            <file>$PROJ_DIR$\Debug\List\Lab_3.map</file>
+            <file>$TOOLKIT_DIR$\config\linker\Atmel\sam3x8e\sram.icf</file>
+            <file>$TOOLKIT_DIR$\inc\c\time.h</file>
             <file>$PROJ_DIR$\Debug\Obj\Lab_3.pbd</file>
             <file>$PROJ_DIR$\Debug\Exe\Lab_3.out</file>
+            <file>$PROJ_DIR$\keypad.h</file>
+            <file>$PROJ_DIR$\exceptions.c</file>
+            <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
+            <file>$PROJ_DIR$\framebuffer.h</file>
+            <file>$PROJ_DIR$\main.c</file>
+            <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
+            <file>$PROJ_DIR$\ats.h</file>
+            <file>$PROJ_DIR$\system_sam3x.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\exceptions.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\exceptions.__cstat.et</file>
             <file>$PROJ_DIR$\core_cm3.h</file>
             <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
             <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
             <file>$TOOLKIT_DIR$\inc\c\inttypes.h</file>
-            <file>$PROJ_DIR$\light_sensor.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\startup_sam3x.pbi</file>
-            <file>$TOOLKIT_DIR$\inc\c\math.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\main.o</file>
             <file>$PROJ_DIR$\Debug\Obj\cstartup.o</file>
             <file>$PROJ_DIR$\display.h</file>
-            <file>$PROJ_DIR$\at91sam3x8.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\system_sam3x.__cstat.et</file>
-            <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
-            <file>$TOOLKIT_DIR$\lib\shb_l.a</file>
-            <file>$PROJ_DIR$\systick.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
-            <file>$PROJ_DIR$\snake.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\exceptions.o</file>
-            <file>$TOOLKIT_DIR$\lib\dl7M_tln.a</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
-            <file>$PROJ_DIR$\core_cmFunc.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\startup_sam3x.pbi</file>
+            <file>$TOOLKIT_DIR$\inc\c\math.h</file>
             <file>$PROJ_DIR$\temp.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
-            <file>$PROJ_DIR$\exceptions.h</file>
-            <file>$PROJ_DIR$\servo.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\system_sam3x.pbi</file>
+            <file>$TOOLKIT_DIR$\lib\dl7M_tln.a</file>
             <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\iccarm_builtin.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_float_setup.h</file>
             <file>$TOOLKIT_DIR$\inc\c\DLib_Product_stdlib.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\time32.h</file>
+            <file>$PROJ_DIR$\systick.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\exceptions.o</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
+            <file>$PROJ_DIR$\light_sensor.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\cmsis_iar.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
+            <file>$PROJ_DIR$\delay.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\system_sam3x.__cstat.et</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
+            <file>$PROJ_DIR$\bitmaps.h</file>
+            <file>$PROJ_DIR$\servo.h</file>
+            <file>$PROJ_DIR$\core_cmFunc.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_float_setup.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\startup_sam3x.o</file>
+            <file>$TOOLKIT_DIR$\inc\c\string.h</file>
+            <file>$PROJ_DIR$\system_sam3x.h</file>
             <file>$TOOLKIT_DIR$\config\linker\Microchip\sam3x8e\sram.icf</file>
+            <file>$PROJ_DIR$\Debug\Exe\Lab_2.out</file>
+            <file>$TOOLKIT_DIR$\inc\c\iccarm_builtin.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\system_sam3x.o</file>
+            <file>$TOOLKIT_DIR$\inc\c\limits.h</file>
+            <file>$PROJ_DIR$\Debug\List\Lab_3.map</file>
+            <file>$TOOLKIT_DIR$\lib\rt7M_tl.a</file>
+            <file>$PROJ_DIR$\Debug\Obj\startup_sam3x.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Exe\Lab_1.out</file>
+            <file>$PROJ_DIR$\exceptions.h</file>
+            <file>$PROJ_DIR$\snake.h</file>
+            <file>$TOOLKIT_DIR$\lib\shb_l.a</file>
+            <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\system_sam3x.pbi</file>
+            <file>$TOOLKIT_DIR$\inc\c\time32.h</file>
         </outputs>
         <file>
             <name>[ROOT_NODE]</name>
             <outputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 32 30</file>
+                    <file> 10 56</file>
                 </tool>
             </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\main.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 36</file>
-                </tool>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 22</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 28</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 25 12 60 20 41 49 43 24 35 44 39 9 2 58 50 26 17 46 14 19 37 48 18 55 38 33 63 53 62 1 34 56 54 61 13 64</file>
-                </tool>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 1 25 60 35 26 34 56 33 24 17 61 54 44 39 46 63 49 19 53 9 37 20 41 62 48 2 18 43 55 58 38 12 14 50 13 64</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\system_sam3x.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 59</file>
-                </tool>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 23</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 45</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 33 60 25 56 54 1 34 61 35 44 26 24 17</file>
-                </tool>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 44 1 25 60 35 26 34 56 33 24 17 61 54</file>
-                </tool>
-            </inputs>
         </file>
         <file>
             <name>$PROJ_DIR$\startup_sam3x.c</name>
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 40</file>
+                    <file> 28</file>
                 </tool>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 0</file>
+                    <file> 48</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 8</file>
+                    <file> 58</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 34 33 54 57 25 60 56 61 35 44 24 26 17</file>
+                    <file> 22 21 45 60 16 32 36 53 2 0 4 42 38</file>
                 </tool>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 44 57 33 25 60 35 26 34 56 24 17 61 54</file>
+                    <file> 0 60 21 16 32 2 42 22 36 4 38 53 45</file>
                 </tool>
             </inputs>
         </file>
@@ -167,34 +113,103 @@
             <outputs>
                 <tool>
                     <name>AARM</name>
-                    <file> 42</file>
+                    <file> 26</file>
                 </tool>
             </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Debug\Exe\Lab_3.out</name>
+            <outputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 56</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 51 26 35 25 48 54 62 57 5 31</file>
+                </tool>
+            </inputs>
         </file>
         <file>
             <name>$PROJ_DIR$\exceptions.c</name>
             <outputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 27</file>
+                    <file> 19</file>
                 </tool>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 51</file>
+                    <file> 35</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 21</file>
+                    <file> 20</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 57</file>
+                    <file> 60</file>
                 </tool>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 57</file>
+                    <file> 60</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\main.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 23</file>
+                </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 25</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 6</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 32 43 0 17 14 63 27 21 16 2 13 55 40 44 61 42 53 46 8 49 24 34 11 30 37 22 36 45 39 50 4 38 33 47 29 65</file>
+                </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 50 16 32 2 42 22 36 21 4 38 53 45 0 13 39 33 63 49 47 55 24 17 29 46 34 40 11 27 30 44 37 43 14 61 8 65</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\system_sam3x.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 64</file>
+                </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 54</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 41</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 21 32 16 36 45 50 22 53 2 0 42 4 38</file>
+                </tool>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 0 50 16 32 2 42 22 36 21 4 38 53 45</file>
                 </tool>
             </inputs>
         </file>
@@ -203,7 +218,7 @@
             <inputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 16 42 51 22 0 23 47 11 15 52</file>
+                    <file> 7 26 35 25 48 54 62 57 5 31</file>
                 </tool>
             </inputs>
         </file>
@@ -212,22 +227,7 @@
             <inputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 16 42 51 22 0 23 47 11 15 52</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Debug\Exe\Lab_3.out</name>
-            <outputs>
-                <tool>
-                    <name>ILINK</name>
-                    <file> 30</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ILINK</name>
-                    <file> 65 42 51 22 0 23 47 11 15 52</file>
+                    <file> 7 26 35 25 48 54 62 57 5 31</file>
                 </tool>
             </inputs>
         </file>

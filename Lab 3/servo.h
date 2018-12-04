@@ -4,21 +4,17 @@
 #include "at91sam3x8.h"
 #include "ats.h"
 
+#define ONE_DEGREE ((float)((2.3 - 0.7) / 180))  // 1 degree -> (max - min) / 180
+#define MS_PULSE   ((int32_t)(2625))             // 1 ms -> (52500 / 20)
 
-#define ONE_DEGREE ((r32)((2.3 - 0.7) / 180))  // 1 degree -> (max - min) / 180
-#define MS_PULSE   ((i32)(2625))             // 1 ms -> (52500 / 20)
-
-
-void servoTurn(i32 degree)
-{
+void servo_turn(int32_t degree) {
     // write value to pwm_cdty, which means set duty cycle to 1ms, cprd / 20 = 1ms = 2625
     if(degree >= 0 && degree <= 180) {
-        *AT91C_PWMC_CH1_CDTYR = (i32)(((ONE_DEGREE * degree) + 0.7) * MS_PULSE);
+        *AT91C_PWMC_CH1_CDTYR = (int32_t)(((ONE_DEGREE * degree) + 0.7) * MS_PULSE);
     }
 }
 
-static void initServo()
-{
+static void servo_init() {
     *AT91C_PMC_PCER  = (1 << 12);       // init PMC PIOB
     *AT91C_PMC_PCER1 = (1 << 4);        // init PMC PWM 36
 
@@ -32,7 +28,7 @@ static void initServo()
     // set period: 20 ms; --- 32 * CPRD / 84000 = 20 <=> CPRD = 52500   (s991)
     *AT91C_PWMC_CH1_CPRDR = 52500;
    
-    servoTurn(0);
+    servo_turn(0);
 }
 
 #endif

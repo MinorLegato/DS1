@@ -8,16 +8,16 @@
 #include "delay.h"
 
 // forward decl
-i32 systickGetTime();
+int32_t systick_get_time();
 
-#define TEMP_READY_TIME         ((i32)(500))
-#define TEMP_COMPRESSION_OFFSET ((i32)(32000))
+#define TEMP_READY_TIME         ((int32_t)(500))
+#define TEMP_COMPRESSION_OFFSET ((int32_t)(32000))
 
-static i32 __temp_start_time = -1;
-static r32 __current_temp = 0.0f;
-static u16 __current_temp_compressed = 0;
+static int32_t __temp_start_time = -1;
+static float __current_temp = 0.0f;
+static uint16_t __current_temp_compressed = 0;
 
-static void initTemp() {
+static void temp_init() {
     *AT91C_PMC_PCER = (1 << 12) | (1 << 27);    // init TC0
     
     // Enable counter and make a sw_reset in TC0_CCR0
@@ -33,12 +33,12 @@ static void initTemp() {
     NVIC_SetPriority(TC0_IRQn, 1);
     NVIC_EnableIRQ(TC0_IRQn);
     
-    i32 t_reset = systickGetTime();
+    int32_t t_reset = systick_get_time();
     
-    while((systickGetTime() - t_reset) < 520);
+    while((systick_get_time() - t_reset) < 520);
 }
 
-static void tempStartMesurment() {
+static void temp_start_mesument() {
     *AT91C_TC0_IER = 1 << 6;             // interrupt LDRBS 
     
     // create a startpuls with a Delay(25); sw_reset in TC0_CCR0.
@@ -53,30 +53,30 @@ static void tempStartMesurment() {
     *AT91C_TC0_IDR = 1 << 6;    // disable interrupt
     *AT91C_TC0_CCR = 1 << 2;
     
-    __temp_start_time = systickGetTime();
+    __temp_start_time = systick_get_time();
 }
 
-static __INLINE r32 tempConvert(i32 rb_ra_diff) {
+static __INLINE float temp_convert(int32_t rb_ra_diff) {
     return (rb_ra_diff / (5.0f * 42.0f)) - 273.15f; // divide by 42
 }
 
-static __INLINE r32 tempDecompress(u16 compressed) {
-    return tempConvert(compressed + TEMP_COMPRESSION_OFFSET);
+static __INLINE float temp_decompress(uint16_t compressed) {
+    return temp_convert(compressed + TEMP_COMPRESSION_OFFSET);
 }
 
 static void __set_current_temp() {
     // global_variable = REG_TC0_RB0 - REG_TC0_RA0 or use a flag
-    i32 rb = (*AT91C_TC0_RB); //Register B
-    i32 ra = (*AT91C_TC0_RA); //Register A 
+    int32_t rb = (*AT91C_TC0_RB); //Register B
+    int32_t ra = (*AT91C_TC0_RA); //Register A 
     
     *AT91C_TC0_SR;  // status register
     
     __current_temp_compressed = (rb - ra) - TEMP_COMPRESSION_OFFSET;
-    __current_temp = tempConvert(rb - ra);
+    __current_temp = temp_convert(rb - ra);
 }
 
-static __INLINE i32 tempReady() {
-    if ((__temp_start_time != -1) && (__temp_start_time + TEMP_READY_TIME) < systickGetTime()) {
+static __INLINE int32_t temp_ready() {
+    if ((__temp_start_time != -1) && (__temp_start_time + TEMP_READY_TIME) < systick_get_time()) {
         __temp_start_time = -1;
         __set_current_temp();
         return 1;
@@ -84,11 +84,11 @@ static __INLINE i32 tempReady() {
     return 0;
 }
 
-static __INLINE u16 tempGetCompressed() {
+static __INLINE uint16_t temp_get_compressed() {
     return __current_temp_compressed;
 }
 
-static __INLINE r32 tempGetCurrent() {
+static __INLINE float temp_get_current() {
     return __current_temp;
 }
 

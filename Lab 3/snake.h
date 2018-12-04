@@ -30,7 +30,7 @@ typedef struct SnakeState {
     uint32_t board[DISPLAY_SIZE];
 } SnakeState;
 
-static void initSnakeState(SnakeState* snake) {
+static void snake_init(SnakeState* snake) {
     memset(snake, 0, sizeof *snake);
     
     snake->dir_y  = -1;
@@ -54,19 +54,18 @@ static __INLINE void resetTimer(clock_t* time) {
     *time = clock();
 }
 
-void runSnakeGame() {
+void snake_run() {
     static SnakeState snake;
     
-    i32 game_running = 1;
+    int game_running = 1;
     clock_t timer = clock();
     
-    initSnakeState(&snake);
+    snake_init(&snake);
 
-    framebufferClear();
-    //display_clear();
+    framebuffer_clear();
     
     while (game_running) {
-        int key = keypadRead();
+        int key = keypad_read();
         
         if (key) {
             if (key == 10) game_running = 0;
@@ -82,9 +81,9 @@ void runSnakeGame() {
             snake.fdir_x = -snake.dir_x;
             snake.fdir_y = -snake.dir_y;
             
-            i32 old_head = snake.head;
+            int old_head = snake.head;
             
-            framebufferClearSnake(snake.xs[snake.tail], snake.ys[snake.tail]);
+            framebuffer_clear_snake(snake.xs[snake.tail], snake.ys[snake.tail]);
             
             snake.board[snake.ys[snake.tail]] ^= (1 << snake.xs[snake.tail]);
             
@@ -120,10 +119,10 @@ void runSnakeGame() {
             
             snake.board[snake.ys[snake.head]] ^= (1 << snake.xs[snake.head]);
             
-            framebufferDrawSnake(snake.xs[snake.head], snake.ys[snake.head]);
-            framebufferDrawApple(snake.apple_x, snake.apple_y);
+            framebuffer_draw_snake(snake.xs[snake.head], snake.ys[snake.head]);
+            framebuffer_draw_apple(snake.apple_x, snake.apple_y);
             
-            framebufferDisplayNoSwap();
+            framebuffer_display();
         }
     }
 }

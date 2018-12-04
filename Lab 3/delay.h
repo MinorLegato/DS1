@@ -3,13 +3,9 @@
 
 #include "ats.h"
 
-
-static __INLINE void delay(i32 value)
-{
-    for (i32 i = 0; i < value; i++)
+static __INLINE void delay(int value) {
+    for (int i = 0; i < value; i++)
         asm("nop");
 }
-
-
 
 #endif
