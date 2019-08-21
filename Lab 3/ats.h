@@ -4,14 +4,23 @@
 #include <math.h>
 #include <stdint.h>
 
-#define STRUCT(NAME) typedef struct NAME NAME; struct NAME
+typedef     float       f32;
+typedef     double      f64;
 
-#define FOR_MATRIX(X, Y) for (int32_t y = 0; y < Y; y++) for (int32_t x = 0; x < X; x++)
+typedef     int8_t      i8;
+typedef     int16_t     i16;
+typedef     int32_t     i32;
+typedef     int64_t     i64;
+
+typedef     uint8_t     u8;
+typedef     uint16_t    u16;
+typedef     uint32_t    u32;
+typedef     uint64_t    u64;
 
 #define randi(min, max) (rand() % ((max) - (min)) + (min))
-#define randf(min, max) ((rand() / (float)RAND_MAX) * fabs((float)(max) - (float)(min)) + (float)(min))
+#define randf(min, max) ((rand() / (f32)RAND_MAX) * fabs((f32)(max) - (f32)(min)) + (f32)(min))
 
-#define Array(T, N) struct { int32_t size; T data[N]; }
+#define Array(T, N) struct { i32 size; T data[N]; }
 
 #define array_add(arr, e)     do { (arr)->data[(arr)->size++] = (e); } while (0);
 #define array_rem(arr, i)     do { (arr)->data[(i)] = (arr)->data[--(arr)->size]; } while (0);
@@ -25,22 +34,6 @@
 
 #define TO_RAD(deg) ((deg) * ((PI) / 180.0f))
 #define TO_DEG(rad) ((rad) * (180.0f / (PI)))
-
-// from Quake 3 Arena
-static inline float rsqrt(float number) {
-	uint32_t i;
-	float x2, y;
-	const float threehalfs = 1.5f;
-
-	x2 = number * 0.5F;
-	y  = number;
-    i = (union { float f; uint32_t l; }) { y }.l;  // evil floating point bit level hacking
-	i  = 0x5f3759df - (i >> 1);             // what the fuck? 
-    y = (union { uint32_t l; float f; }) { i }.f;
-	y  = y * (threehalfs - (x2 * y * y));   // 1st iteration
-
-	return y;
-}
 
 // modified version of stb_perlin.h from nothings stb library
 static const uint8_t stb__perlin_randtab[512] = {
@@ -80,13 +73,13 @@ static const uint8_t stb__perlin_randtab[512] = {
     61, 40, 167, 237, 102, 223, 106, 159, 197, 189, 215, 137, 36, 32, 22, 5,  
 };
 
-static inline float stb__perlin_lerp(float a, float b, float t) {
+static inline f32 stb__perlin_lerp(f32 a, f32 b, f32 t) {
     return a + (b - a) * t;
 }
 
 // different grad function from Perlin's, but easy to modify to match reference
-static inline float stb__perlin_grad(int32_t hash, float x, float y, float z) {
-    static const float basis[12][4] = {
+static inline f32 stb__perlin_grad(int32_t hash, f32 x, f32 y, f32 z) {
+    static const f32 basis[12][4] = {
         {  1, 1, 0 },
         { -1, 1, 0 },
         {  1,-1, 0 },
@@ -115,7 +108,7 @@ static inline float stb__perlin_grad(int32_t hash, float x, float y, float z) {
     
     // if you use reference permutation table, change 63 below to 15 to match reference
     
-    //float *grad = basis[indices[hash & 63]];
+    //f32 *grad = basis[indices[hash & 63]];
     
     //return grad[0] * x + grad[1] * y + grad[2] * z;
     return basis[indices[hash & 63]][0] * x +
@@ -123,11 +116,11 @@ static inline float stb__perlin_grad(int32_t hash, float x, float y, float z) {
         basis[indices[hash & 63]][2] * z;
 }
 
-static inline float cfloor(float n) {
+static inline f32 cfloor(f32 n) {
     return n >= 0? (int32_t)(n) : (int32_t)(n - 1.0f);
 }
 
-static inline float perlinNoise(float x, float y, float z) {
+static inline f32 perlinNoise(f32 x, f32 y, f32 z) {
     static const int32_t x_wrap = 0;
     static const int32_t y_wrap = 0;
     static const int32_t z_wrap = 0;
@@ -150,9 +143,9 @@ static inline float perlinNoise(float x, float y, float z) {
     
 #define stb__perlin_ease(a)   (((a*6-15)*a + 10) * a * a * a)
     
-    const float u = stb__perlin_ease(x);
-    const float v = stb__perlin_ease(y);
-    const float w = stb__perlin_ease(z);
+    const f32 u = stb__perlin_ease(x);
+    const f32 v = stb__perlin_ease(y);
+    const f32 w = stb__perlin_ease(z);
     
     const int32_t r0 = stb__perlin_randtab[x0];
     const int32_t r1 = stb__perlin_randtab[x1];
@@ -162,22 +155,22 @@ static inline float perlinNoise(float x, float y, float z) {
     const int32_t r10 = stb__perlin_randtab[r1+y0];
     const int32_t r11 = stb__perlin_randtab[r1+y1];
     
-    const float n000 = stb__perlin_grad(stb__perlin_randtab[r00+z0], x  , y  , z   );
-    const float n001 = stb__perlin_grad(stb__perlin_randtab[r00+z1], x  , y  , z-1 );
-    const float n010 = stb__perlin_grad(stb__perlin_randtab[r01+z0], x  , y-1, z   );
-    const float n011 = stb__perlin_grad(stb__perlin_randtab[r01+z1], x  , y-1, z-1 );
-    const float n100 = stb__perlin_grad(stb__perlin_randtab[r10+z0], x-1, y  , z   );
-    const float n101 = stb__perlin_grad(stb__perlin_randtab[r10+z1], x-1, y  , z-1 );
-    const float n110 = stb__perlin_grad(stb__perlin_randtab[r11+z0], x-1, y-1, z   );
-    const float n111 = stb__perlin_grad(stb__perlin_randtab[r11+z1], x-1, y-1, z-1 );
+    const f32 n000 = stb__perlin_grad(stb__perlin_randtab[r00+z0], x  , y  , z   );
+    const f32 n001 = stb__perlin_grad(stb__perlin_randtab[r00+z1], x  , y  , z-1 );
+    const f32 n010 = stb__perlin_grad(stb__perlin_randtab[r01+z0], x  , y-1, z   );
+    const f32 n011 = stb__perlin_grad(stb__perlin_randtab[r01+z1], x  , y-1, z-1 );
+    const f32 n100 = stb__perlin_grad(stb__perlin_randtab[r10+z0], x-1, y  , z   );
+    const f32 n101 = stb__perlin_grad(stb__perlin_randtab[r10+z1], x-1, y  , z-1 );
+    const f32 n110 = stb__perlin_grad(stb__perlin_randtab[r11+z0], x-1, y-1, z   );
+    const f32 n111 = stb__perlin_grad(stb__perlin_randtab[r11+z1], x-1, y-1, z-1 );
     
-    const float n00 = stb__perlin_lerp(n000,n001,w);
-    const float n01 = stb__perlin_lerp(n010,n011,w);
-    const float n10 = stb__perlin_lerp(n100,n101,w);
-    const float n11 = stb__perlin_lerp(n110,n111,w);
+    const f32 n00 = stb__perlin_lerp(n000,n001,w);
+    const f32 n01 = stb__perlin_lerp(n010,n011,w);
+    const f32 n10 = stb__perlin_lerp(n100,n101,w);
+    const f32 n11 = stb__perlin_lerp(n110,n111,w);
     
-    const float n0 = stb__perlin_lerp(n00,n01,v);
-    const float n1 = stb__perlin_lerp(n10,n11,v);
+    const f32 n0 = stb__perlin_lerp(n00,n01,v);
+    const f32 n1 = stb__perlin_lerp(n10,n11,v);
     
     return stb__perlin_lerp(n0,n1,u);
 }

@@ -22,30 +22,31 @@ static void keypad_init() {
     *AT91C_PIOD_SODR = AT91C_PIO_PD0 | AT91C_PIO_PD2;
 }
 
-static __INLINE int32_t __read_row() { 
+static __INLINE int __read_row() { 
     return ((*AT91C_PIOC_PDSR & KEYBOARD_ROW) >> 2);
 }
 
-static __INLINE void __set_colunm(int32_t col) {
+static __INLINE void __set_colunm(int col) {
     *AT91C_PIOC_SODR = KEYBOARD_COL;    // set all columns as 1
     *AT91C_PIOC_CODR = 1 << (col + 7);  // clear the column 'col'
 }
 
 static int keypad_read() {
-    int32_t value = 0;
+    int value = 0;
     // clear OE KEY BUS (Active Low)   
     *AT91C_PIOD_CODR = AT91C_PIO_PD2; // PIN 27
     // make all column pin as output 
     *AT91C_PIOC_OER = KEYBOARD_COL;
 
-    for (int32_t n = 0; n < 3; n++) {
+    for (int n = 0; n < 3; n++) {
         __set_colunm((n + 1) % 3);
         
-        int32_t row = ~__read_row();
+        int row = ~__read_row();
     
-        for (int32_t i = 0; i < 4; i++) {
-            if((row & (1 << i)) == (1 << i))
+        for (int i = 0; i < 4; i++) {
+            if((row & (1 << i)) == (1 << i)) {
                 value = ((i + 1) % 4) * 3 + n + 1; 
+            }
         }
     }
     
@@ -55,7 +56,7 @@ static int keypad_read() {
 }
 
 static int keypad_wait() {
-    int32_t value = 0;
+    int value = 0;
     do { value = keypad_read(); } while(value == 0);
     return value;
 }

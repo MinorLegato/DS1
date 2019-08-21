@@ -3,14 +3,14 @@
 
 #include "ats.h"
 
-uint32_t is_logging = 0;
+i32 is_logging = 0;
 
 // forward decl
-void temp_start_mesument();
-int temp_ready();
-void log_current_temp();
+static void temp_start_mesument();
+static int  temp_ready();
+static void log_current_temp();
 
-int32_t __systick_counter = 0;
+static int __systick_counter = 0;
 
 void SysTick_Handler(void) {
     __systick_counter++;
@@ -22,7 +22,7 @@ void SysTick_Handler(void) {
     }
 }
 
-static void systick_init() {
+static static void systick_init() {
     *AT91C_PMC_PCER = (1 << 3);
     SysTick_Config(84000);
 }

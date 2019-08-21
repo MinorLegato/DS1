@@ -8,14 +8,14 @@
 #include "delay.h"
 
 // forward decl
-int32_t systick_get_time();
+int systick_get_time();
 
-#define TEMP_READY_TIME         ((int32_t)(500))
-#define TEMP_COMPRESSION_OFFSET ((int32_t)(32000))
+#define TEMP_READY_TIME         (500)
+#define TEMP_COMPRESSION_OFFSET (32000)
 
-static int32_t __temp_start_time = -1;
-static float __current_temp = 0.0f;
-static uint16_t __current_temp_compressed = 0;
+static i32 __temp_start_time         = -1;
+static f32 __current_temp            = 0.0f;
+static u16 __current_temp_compressed = 0;
 
 static void temp_init() {
     *AT91C_PMC_PCER = (1 << 12) | (1 << 27);    // init TC0
@@ -33,7 +33,7 @@ static void temp_init() {
     NVIC_SetPriority(TC0_IRQn, 1);
     NVIC_EnableIRQ(TC0_IRQn);
     
-    int32_t t_reset = systick_get_time();
+    i32 t_reset = systick_get_time();
     
     while((systick_get_time() - t_reset) < 520);
 }
@@ -56,18 +56,18 @@ static void temp_start_mesument() {
     __temp_start_time = systick_get_time();
 }
 
-static __INLINE float temp_convert(int32_t rb_ra_diff) {
+static __INLINE f32 temp_convert(i32 rb_ra_diff) {
     return (rb_ra_diff / (5.0f * 42.0f)) - 273.15f; // divide by 42
 }
 
-static __INLINE float temp_decompress(uint16_t compressed) {
+static __INLINE f32 temp_decompress(uint16_t compressed) {
     return temp_convert(compressed + TEMP_COMPRESSION_OFFSET);
 }
 
 static void __set_current_temp() {
     // global_variable = REG_TC0_RB0 - REG_TC0_RA0 or use a flag
-    int32_t rb = (*AT91C_TC0_RB); //Register B
-    int32_t ra = (*AT91C_TC0_RA); //Register A 
+    i32 rb = (*AT91C_TC0_RB); //Register B
+    i32 ra = (*AT91C_TC0_RA); //Register A 
     
     *AT91C_TC0_SR;  // status register
     
@@ -75,7 +75,7 @@ static void __set_current_temp() {
     __current_temp = temp_convert(rb - ra);
 }
 
-static __INLINE int32_t temp_ready() {
+static __INLINE int temp_ready() {
     if ((__temp_start_time != -1) && (__temp_start_time + TEMP_READY_TIME) < systick_get_time()) {
         __temp_start_time = -1;
         __set_current_temp();
@@ -84,11 +84,11 @@ static __INLINE int32_t temp_ready() {
     return 0;
 }
 
-static __INLINE uint16_t temp_get_compressed() {
+static __INLINE u16 temp_get_compressed() {
     return __current_temp_compressed;
 }
 
-static __INLINE float temp_get_current() {
+static __INLINE f32 temp_get_current() {
     return __current_temp;
 }
 
